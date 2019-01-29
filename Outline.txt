@@ -1,0 +1,42 @@
+Sprint1
+    Search
+    ViewAll
+    ViewDetail
+    Register
+    Login
+
+Table
+•User
+    -UserID: int
+    -Username: nvarchar
+    -Password: nvarchar
+    -Email: nvarchar
+    -Address: nvarchar
+    -Tel: nvarchar
+    -Seller: (0,1) Verify by send an image of IDCard to admin email.
+    //-CreditNo: int //ซื้อตัดเงินผ่านบัตร คนขายรับเงินยังไง?
+    //-CreditCVV: int
+    //-CreditMonth: int
+    //-CreditYear: int
+    -SALT: nvarchar
+•Item //เราเป็นคนตั้ง Item ทั้งหมด, ของใหม่ออกก็ใส่เพิ่มในระบบ
+    -ItemID: int
+    -ItemBrand: nvarchar
+    -ItemDesc: nvarchar
+    -ItemColor: varchar
+    -ItemImage: img. path
+    -ItemReleased: date
+•Order //Ask+Bid ขาย, ซื้อได้ทีละอย่าง แต่อย่างละหลายชิ้น ต่อ 1 record
+    -OrderID: int
+    -Flag: 0, 1
+    -UserID: int
+    -ItemID: int
+    -ItemSize: int
+    -ItemAmount: int // Match บางส่วนได้ ถ้่าเหลือ 0 จึงลบรายการ
+    -OrderPrice: float // ราคาต่อชิ้น
+•Match
+    -MatchID: int
+    -AskOrderID: int
+    -BidOrderID: int
+    -OrderAmount: int
+    -MatchPrice: float // ราคาทั้งหมด

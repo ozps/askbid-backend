@@ -1,0 +1,11 @@
+# dependencies
+node_modules
+
+# error
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+#config
+config/dbConfig.js
+.DS_Store
