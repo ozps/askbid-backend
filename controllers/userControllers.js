@@ -22,7 +22,7 @@ const signUp = (req, res) => {
 }
 
 const signIn = (req, res) => {
-    let query = 'SELECT Password FROM User WHERE Email = ?'
+    let query = 'SELECT UserID,Password FROM User WHERE Email = ?'
     let checkPass = false
     connection.query(query, [req.body.email], (error, results) => {
         if (error) throw error
@@ -35,7 +35,11 @@ const signIn = (req, res) => {
             let token = jwt.sign({ data: req.body.email }, keys.secretKey, {
                 expiresIn: 60 * 60
             })
-            res.status(200).json({ status: 'success', token: token })
+            res.status(200).json({
+                status: 'success',
+                token: token,
+                userID: result[0].UserID
+            })
         } else {
             res.status(200).json({ status: 'fail' })
         }

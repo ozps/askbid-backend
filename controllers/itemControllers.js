@@ -6,7 +6,9 @@ const getAllItems = (req, res) => {
         if (error) throw error
         let resultsArray = JSON.parse(JSON.stringify(results))
         resultsArray = resultsArray.sort((a, b) =>
-            a.ItemDesc > b.ItemDesc ? 1 : -1
+            a.ItemBrand + ' ' + a.ItemDesc > b.ItemBrand + ' ' + b.ItemDesc
+                ? 1
+                : -1
         )
         res.status(200).json(resultsArray)
     })

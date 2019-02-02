@@ -2,7 +2,7 @@ const { Router } = require('express')
 const itemControllers = require('../controllers/itemControllers')
 const router = new Router()
 
-// Get all item (Sorted by ItemDesc)
+// Get all item (Sorted by ItemBrand+ItemDesc)
 router.get('/get_all_items', itemControllers.getAllItems)
 
 // Get detail item
