@@ -3,25 +3,26 @@ const app = express()
 const bodyParser = require('body-parser')
 const expressJwt = require('express-jwt')
 const cors = require('cors')
+const keys = require('./config/keys')
 require('./models/dbConnection')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())
-// app.use(
-//     expressJwt({ secret: keys.secretKey }).unless({
-//         path: [
-//             // Public routes that don't require authentication
-//             /\/item*/,
-//             /\/images*/,
-//             /\/order\/get_ask_price*/,
-//             /\/order\/get_bid_price*/,
-//             '/user/sign_in',
-//             '/user/sign_up',
-//             '/user/forget_password'
-//         ]
-//     })
-// )
+app.use(
+    expressJwt({ secret: keys.secretKey }).unless({
+        path: [
+            // Public routes that don't require authentication
+            /\/item*/,
+            /\/images*/,
+            /\/order\/get_ask_price*/,
+            /\/order\/get_bid_price*/,
+            '/user/sign_in',
+            '/user/sign_up',
+            '/user/forget_password'
+        ]
+    })
+)
 
 app.use('/', require('./routes'))
 app.use('/item', require('./routes/itemRoutes'))

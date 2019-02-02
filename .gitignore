@@ -1,11 +1,14 @@
 # dependencies
 node_modules
 
+#config
+config/dbConfig.js
+config/keys.js
+
 # error
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-#config
-config/dbConfig.js
+# os x files
 .DS_Store

@@ -7,18 +7,16 @@ Sprint1
 
 Table
 •User
-    -UserID: int
-    -Username: nvarchar
-    -Password: nvarchar
-    -Email: nvarchar
+    *-UserID: int
+    *-Fullname: nvarchar
+    *-Email: nvarchar
+    *-Password: nvarchar
     -Address: nvarchar
     -Tel: nvarchar
-    -Seller: (0,1) Verify by send an image of IDCard to admin email.
-    //-CreditNo: int //ซื้อตัดเงินผ่านบัตร คนขายรับเงินยังไง?
-    //-CreditCVV: int
-    //-CreditMonth: int
-    //-CreditYear: int
-    -SALT: nvarchar
+    -Balance: float
+    -BankNo: nvarchar
+    *-Verified: (false:0,true:1+) Verify by send an image of IDCard to admin email.
+    *-Salt: nvarchar
 •Item //เราเป็นคนตั้ง Item ทั้งหมด, ของใหม่ออกก็ใส่เพิ่มในระบบ
     -ItemID: int
     -ItemBrand: nvarchar
@@ -41,3 +39,9 @@ Table
     -BidOrderID: int
     -OrderAmount: int
     -MatchPrice: float // ราคาทั้งหมด
+
+
+    คนซื้อ              ระบบ                คนขาย
+    -กดซื้อ             -รับเงินคนซื้อ+หัก%      -รับที่อยู่คนซื้อ email
+    -กดรับของ[1]       -ส่งเงินให้คนขาย       -แจ้งเงินเข้า email
+    PS. [1] การตั้งระบบ Hold ยอดยังไม่รู้ว่าทำไง
