@@ -31,6 +31,7 @@ CREATE TABLE `Item` (
   `ItemDesc` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `ItemColor` varchar(45) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `ItemReleased` datetime NOT NULL,
+  `ItemClicked` int(11) NOT NULL,
   PRIMARY KEY (`ItemID`),
   UNIQUE KEY `ItemID_UNIQUE` (`ItemID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -42,7 +43,7 @@ CREATE TABLE `Item` (
 
 LOCK TABLES `Item` WRITE;
 /*!40000 ALTER TABLE `Item` DISABLE KEYS */;
-INSERT INTO `Item` VALUES (1,'sneaker1.jpg','Nike','Jordan 1 Retro High','Neutral Grey Hyper Crimson','2019-01-24 00:00:00'),(2,'sneaker2.jpg','Nike','Jordan 1 Retro High Camo 3M','Wolf Grey','2017-08-01 00:00:00'),(3,'sneaker3.jpg','Adidas ','Yeezy Wave Runner 700','Solid Grey','2017-11-01 00:00:00'),(4,'sneaker4.jpg','Nike','Zoom Fly Off-White','Black Silver','2018-10-13 00:00:00'),(5,'sneaker5.jpg','Adidas','Yeezy Boost 350 V2','Static','2018-12-27 00:00:00'),(6,'sneaker6.jpg','Converse','Chuck Taylor All-Star 70s Hi Off-White','White','2018-10-08 00:00:00'),(7,'sneaker7.jpg','Vans','Old Skool NASA Space Voyager','True White','2018-11-02 00:00:00'),(8,'sneaker8.jpg','Adidas ','Yeezy Boost 500','Utility Black','2018-07-07 00:00:00'),(9,'sneaker9.jpg','Adidas ','Yeezy Boost 350','Pirate Black','2015-08-22 00:00:00'),(10,'sneaker10.jpg','Nike','Air Vapormax Off White','White','2018-04-14 00:00:00');
+INSERT INTO `Item` VALUES (1,'sneaker1.jpg','Nike','Jordan 1 Retro High','Neutral Grey Hyper Crimson','2019-01-24 00:00:00',3),(2,'sneaker2.jpg','Nike','Jordan 1 Retro High Camo 3M','Wolf Grey','2017-08-01 00:00:00',3),(3,'sneaker3.jpg','Adidas ','Yeezy Wave Runner 700','Solid Grey','2017-11-01 00:00:00',10),(4,'sneaker4.jpg','Nike','Zoom Fly Off-White','Black Silver','2018-10-13 00:00:00',22),(5,'sneaker5.jpg','Adidas','Yeezy Boost 350 V2','Static','2018-12-27 00:00:00',13),(6,'sneaker6.jpg','Converse','Chuck Taylor All-Star 70s Hi Off-White','White','2018-10-08 00:00:00',15),(7,'sneaker7.jpg','Vans','Old Skool NASA Space Voyager','True White','2018-11-02 00:00:00',7),(8,'sneaker8.jpg','Adidas ','Yeezy Boost 500','Utility Black','2018-07-07 00:00:00',33),(9,'sneaker9.jpg','Adidas ','Yeezy Boost 350','Pirate Black','2015-08-22 00:00:00',27),(10,'sneaker10.jpg','Nike','Air Vapormax Off White','White','2018-04-14 00:00:00',16);
 /*!40000 ALTER TABLE `Item` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

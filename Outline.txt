@@ -26,6 +26,7 @@ Table
     -ItemColor: varchar
     -ItemImage: img. path
     -ItemReleased: date
+    -ItemClicked: int
 •Order //Ask+Bid ขาย, ซื้อได้ทีละอย่าง แต่อย่างละหลายชิ้น ต่อ 1 record
     -OrderID: int
     -Flag: 0, 1
