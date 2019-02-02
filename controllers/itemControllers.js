@@ -54,7 +54,6 @@ const getDetailItem = (req, res) => {
 
 const searchItems = (req, res) => {
     let text = req.body.text.trim()
-    console.log(text)
     let searchResults = []
     let query = 'SELECT * FROM Item'
     connection.query(query, (error, results) => {
