@@ -12,17 +12,22 @@ app.use(cors())
 //     expressJwt({ secret: keys.secretKey }).unless({
 //         path: [
 //             // Public routes that don't require authentication
-//             '/item/search_items',
-//             '/item/get_all_items',
-//             '/item/get_detail_item'
+//             /\/item*/,
+//             /\/images*/,
+//             /\/order\/get_ask_price*/,
+//             /\/order\/get_bid_price*/,
+//             '/user/sign_in',
+//             '/user/sign_up',
+//             '/user/forget_password'
 //         ]
 //     })
 // )
 
 app.use('/', require('./routes'))
 app.use('/item', require('./routes/itemRoutes'))
-// app.use('/user', require('./routes/userRoutes'))
-// app.use('/order', require('./routes/orderRoutes'))
+app.use('/order', require('./routes/orderRoutes'))
+app.use('/user', require('./routes/userRoutes'))
+app.use('/match', require('./routes/matchRoutes'))
 
 // Static Files
 app.use(express.static('public'))
