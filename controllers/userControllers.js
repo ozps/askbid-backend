@@ -41,7 +41,7 @@ const signIn = (req, res) => {
                 userID: result[0].UserID
             })
         } else {
-            res.status(200).json({ status: 'fail' })
+            res.status(401).json({ status: 'fail' })
         }
     })
 }

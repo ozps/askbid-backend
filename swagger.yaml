@@ -12,8 +12,6 @@ tags:
 schemes:
 - http
 - https
-consumes: application/json
-produces: application/json
 paths:
   /item/get_all_items:
     get:
@@ -99,22 +97,87 @@ paths:
       produces:
       - application/json
       parameters:
-      - name: text
+      - name: state
         in: body
         description: Some details of items
-        required: true
-        type: string
+        type: object
+        properties:
+          text:
+            type: string
       responses:
         200:
           description: successful operation
           schema:
-            type: "array"
+            type: array
             items:
               $ref: '#/definitions/Item'
-  # /user/sign_up:
-
-  # /user/sign_in:
-
+  /user/sign_up:
+    post:
+      tags:
+      - user
+      summary: Sign Up
+      description: Users want to sign up
+      operationId: signUp
+      produces:
+      - application/json
+      parameters:
+      - name: state
+        in: body
+        description: Information of a user
+        type: object
+        properties:
+          fullName:
+            type: string
+          email:
+            type: string
+          password:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+  /user/sign_in:
+    post:
+      tags:
+      - user
+      summary: Sign In
+      description: Users want to sign in
+      operationId: signIn
+      produces:
+      - application/json
+      parameters:
+      - name: state
+        in: body
+        description: Information of a user
+        type: object
+        properties:
+          email:
+            type: string
+          password:
+            type: string
+      responses:
+        200:
+          description: successful operation
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
+              token:
+                type: string
+              userID:
+                type: integer
+        401:
+          description: Authorization information is missing or invalid.
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
 definitions:
   Item:
     type: object
