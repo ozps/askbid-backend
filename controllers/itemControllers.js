@@ -53,7 +53,7 @@ const getDetailItem = (req, res) => {
 }
 
 const searchItems = (req, res) => {
-    let text = req.body.text.trim()
+    let text = req.body.text.trim().toLowerCase()
     let searchResults = []
     let query = 'SELECT * FROM Item'
     connection.query(query, (error, results) => {
@@ -61,9 +61,9 @@ const searchItems = (req, res) => {
         let resultsArray = JSON.parse(JSON.stringify(results))
         resultsArray.forEach(item => {
             if (
-                item['ItemBrand'].includes(text) ||
-                item['ItemDesc'].includes(text) ||
-                item['ItemColor'].includes(text)
+                item['ItemBrand'].toLowerCase().includes(text) ||
+                item['ItemDesc'].toLowerCase().includes(text) ||
+                item['ItemColor'].toLowerCase().includes(text)
             ) {
                 searchResults.push(item)
             }
