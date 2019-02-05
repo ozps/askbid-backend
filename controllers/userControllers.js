@@ -4,20 +4,34 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const saltRounds = 10
 
-const signUp = (req, res) => {
+const register = (fullName, email, password) => {
     bcrypt.genSalt(saltRounds, function(error, salt) {
-        bcrypt.hash(req.body.password, salt, function(error, hash) {
+        bcrypt.hash(password, salt, function(error, hash) {
             let query =
-                'INSERT INTO User(FullName, Email, Password, Verified, Salt) VALUES(?,?,?,false,?)'
+                'INSERT INTO User(FullName, Email, Password, Verified, Salt) VALUES(?, ?, ?, false, ?)'
             connection.query(
                 query,
-                [req.body.fullName, req.body.email, hash, salt],
+                [fullName, email, hash, salt],
                 (error, results) => {
                     if (error) throw error
-                    res.status(200).json({ status: 'success' })
                 }
             )
         })
+    })
+}
+
+const signUp = async (req, res) => {
+    let queryEmail = 'SELECT * FROM User WHERE Email = ?'
+    var checkDup = false
+    await connection.query(queryEmail, [req.body.email], (error, results) => {
+        if (error) throw error
+        result = JSON.parse(JSON.stringify(results))
+        if (result.length == 0) {
+            register(req.body.fullName, req.body.email, req.body.password)
+            res.status(200).json({ status: 'success' })
+        } else {
+            res.status(409).json({ status: 'fail' })
+        }
     })
 }
 
