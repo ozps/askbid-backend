@@ -53,23 +53,17 @@ const getDetailItem = (req, res) => {
 }
 
 const searchItems = (req, res) => {
-    let text = req.body.text.trim().toLowerCase()
-    let searchResults = []
-    let query = 'SELECT * FROM Item'
-    connection.query(query, (error, results) => {
-        if (error) throw error
-        let resultsArray = JSON.parse(JSON.stringify(results))
-        resultsArray.forEach(item => {
-            if (
-                item['ItemBrand'].toLowerCase().includes(text) ||
-                item['ItemDesc'].toLowerCase().includes(text) ||
-                item['ItemColor'].toLowerCase().includes(text)
-            ) {
-                searchResults.push(item)
-            }
-        })
-        res.status(200).json(searchResults)
-    })
+    let query =
+        'SELECT * FROM Item WHERE ItemBrand LIKE "%"?"%" OR ItemDesc LIKE "%"?"%" OR ItemColor LIKE "%"?"%"'
+    connection.query(
+        query,
+        [req.body.text, req.body.text, req.body.text],
+        (error, results) => {
+            if (error) throw error
+            let resultsArray = JSON.parse(JSON.stringify(results))
+            res.status(200).json(resultsArray)
+        }
+    )
 }
 
 module.exports = {
