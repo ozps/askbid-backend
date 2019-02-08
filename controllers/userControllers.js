@@ -20,10 +20,10 @@ const register = (fullName, email, password) => {
     })
 }
 
-const signUp = async (req, res) => {
+const signUp = (req, res) => {
     let queryEmail = 'SELECT * FROM User WHERE Email = ?'
     var checkDup = false
-    await connection.query(queryEmail, [req.body.email], (error, results) => {
+    connection.query(queryEmail, [req.body.email], (error, results) => {
         if (error) throw error
         result = JSON.parse(JSON.stringify(results))
         if (result.length == 0) {
@@ -36,7 +36,7 @@ const signUp = async (req, res) => {
 }
 
 const signIn = (req, res) => {
-    let query = 'SELECT UserID,Password FROM User WHERE Email = ?'
+    let query = 'SELECT * FROM User WHERE Email = ?'
     let checkPass = false
     connection.query(query, [req.body.email], (error, results) => {
         if (error) throw error
@@ -52,7 +52,8 @@ const signIn = (req, res) => {
             res.status(200).json({
                 status: 'success',
                 token: token,
-                userID: result[0].UserID
+                userID: result[0].UserID,
+                verified: result[0].Verified
             })
         } else {
             res.status(401).json({ status: 'fail' })
@@ -62,17 +63,8 @@ const signIn = (req, res) => {
 
 const updateProfile = (req, res) => {}
 
-const forgetPassword = (req, res) => {}
-
-const changePassword = (req, res) => {}
-
-const verifyUser = (req, res) => {}
-
 module.exports = {
     signUp,
     signIn,
-    updateProfile,
-    forgetPassword,
-    changePassword,
-    verifyUser
+    updateProfile
 }
