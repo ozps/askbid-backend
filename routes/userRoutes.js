@@ -11,4 +11,7 @@ router.post('/sign_in', userControllers.signIn)
 // Update profile
 router.post('/update_profile', userControllers.updateProfile)
 
+// Get detail user
+router.post('/get_detail_user', userControllers.getDetailUser)
+
 module.exports = router

@@ -45,7 +45,6 @@ app.use(
             /\/order\/get_bid_price*/,
             '/user/sign_in',
             '/user/sign_up',
-            '/user/forget_password',
             /\/api-docs*/
         ]
     })

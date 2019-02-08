@@ -61,10 +61,39 @@ const signIn = (req, res) => {
     })
 }
 
-const updateProfile = (req, res) => {}
+const updateProfile = (req, res) => {
+    let query =
+        'UPDATE User SET FullName = ?, Address = ?, Tel = ?, Balance = ?, BankNo = ? WHERE UserID = ?'
+    connection.query(
+        query,
+        [
+            req.body.fullName,
+            req.body.address,
+            req.body.tel,
+            req.body.balance,
+            req.body.bankNo,
+            req.body.userID
+        ],
+        (error, results) => {
+            if (error) throw error
+            res.status(200).json({ status: 'success' })
+        }
+    )
+}
+
+const getDetailUser = (req, res) => {
+    let query =
+        'SELECT FullName, Address, Tel, Balance, BankNo FROM User WHERE UserID = ?'
+    connection.query(query, [req.body.userID], (error, results) => {
+        if (error) throw error
+        queryResults = JSON.parse(JSON.stringify(results))
+        res.status(200).json(queryResults[0])
+    })
+}
 
 module.exports = {
     signUp,
     signIn,
-    updateProfile
+    updateProfile,
+    getDetailUser
 }
