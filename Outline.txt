@@ -1,9 +1,7 @@
-Sprint1
-    Search
-    ViewAll
-    ViewDetail
-    Register
-    Login
+Sprint 2 
+    User system(Old+Verify+Update)
+    Admin system    
+    Order(Ask+Bid) system
 
 Table
 •User
@@ -15,22 +13,22 @@ Table
     -Tel: nvarchar
     -Balance: float
     -BankNo: nvarchar
-    *-Verified: (false:0,true:1+) Verify by send an image of IDCard to admin email.
+    *-Verified: (No:0,Yes:1,Admin:2)
     *-Salt: nvarchar
 •Item //เราเป็นคนตั้ง Item ทั้งหมด, ของใหม่ออกก็ใส่เพิ่มในระบบ
     -ItemID: int
     -ItemBrand: nvarchar
     -ItemDesc: nvarchar
-    -ItemColor: varchar
-    -ItemImage: img. path
+    -ItemColor: nvarchar
+    -ItemImage: nvarchar(img. path)
     -ItemReleased: date
     -ItemClicked: int
-•Order //Ask+Bid ขาย, ซื้อได้ทีละอย่าง แต่อย่างละหลายชิ้น ต่อ 1 record
+•Order //Ask+Bid ขาย,ซื้อได้ทีละอย่าง แต่อย่างละหลายชิ้น ต่อ 1 record
     -OrderID: int
-    -Flag: 0, 1
-    -UserID: int // Store in  localStorage
-    -ItemID: int // Get all items that sored by name
-    -ItemSize: int
+    -Flag: (Ask:0,Bid:1)
+    -UserID: int // Store in localStorage
+    -ItemID: int // Get all items that sorted by name
+    -ItemSize: nvarchar (USx,UKx,S,M,L)
     -ItemAmount: int // Match บางส่วนได้ ถ้่าเหลือ 0 จึงลบรายการ
     -OrderPrice: float // ราคาต่อชิ้น
 •Match
@@ -42,6 +40,7 @@ Table
 
 
     คนซื้อ              ระบบ                คนขาย
-    -กดซื้อ             -รับเงินคนซื้อ+หัก%      -รับที่อยู่คนซื้อ email
+    -กดซื้อ             -รับเงินคนซื้อ+หัก%      -รับที่อยู่คนซื้อ email[2]
     -กดรับของ[1]       -ส่งเงินให้คนขาย       -แจ้งเงินเข้า email
-    PS. [1] การตั้งระบบ Hold ยอดยังไม่รู้ว่าทำไง
+    PS. [1] การตั้งระบบ Hold 
+        [2] ดูวิธีเขียนรับ-ส่ง email
