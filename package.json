@@ -5,6 +5,7 @@
     "author": "ozps",
     "license": "MIT",
     "dependencies": {
+        "async": "^2.6.1",
         "bcrypt": "^3.0.3",
         "body-parser": "^1.18.3",
         "cors": "^2.8.5",
