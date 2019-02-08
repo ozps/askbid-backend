@@ -15,6 +15,7 @@ const getAllList = (req, res) => {
         // })
         allList.push(Number(file.substr(9, 1)))
     })
+    // res.status(200).json(resultsArray)
     async.forEachOf(
         allList,
         function(dataElement, i, inner_callback) {
@@ -39,7 +40,26 @@ const getAllList = (req, res) => {
     )
 }
 
-const verify = (req, res) => {}
+const verify = (req, res) => {
+    let queryCheck = 'SELECT Verified FROM User WHERE UserID = ?'
+    connection.query(queryCheck, [req.body.userID], (error, results) => {
+        if (error) throw error
+        else {
+            result = JSON.parse(JSON.stringify(results))
+            if (result[0].Verified == 2) {
+                let query = 'UPDATE User SET Verified = ? WHERE UserID = ?'
+                connection.query(
+                    query,
+                    [req.body.verified, req.body.targetID],
+                    (err, result) => {
+                        if (error) throw error
+                        res.status(200).json({ status: 'success' })
+                    }
+                )
+            } else res.status(401).json({ status: 'fail' })
+        }
+    })
+}
 
 module.exports = {
     getAllList,
