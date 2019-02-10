@@ -5,13 +5,16 @@ const router = new Router()
 // Create bid or ask order
 router.post('/create_order', orderControllers.createOrder)
 
-// Get bid or ask order
-router.get('/get_order/:id', orderControllers.getDetailOrder)
+// Get all bid or ask orders (UserID)
+router.get('/get_user_orders/:id', orderControllers.getUserOrders)
 
-// Get ask item price
+// Get bid or ask order (OrderID)
+router.get('/get_detail_order/:id', orderControllers.getDetailOrder)
+
+// Get ask item price (ItemID)
 router.get('/get_ask_price/:id', orderControllers.getAskPrice)
 
-// Get bid item price
+// Get bid item price (ItemID)
 router.get('/get_bid_price/:id', orderControllers.getBidPrice)
 
 // Update bid or ask order

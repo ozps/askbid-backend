@@ -8,7 +8,7 @@ const register = (fullName, email, password) => {
     bcrypt.genSalt(saltRounds, function(error, salt) {
         bcrypt.hash(password, salt, function(error, hash) {
             let query =
-                'INSERT INTO User(FullName, Email, Password, Verified, Salt) VALUES(?, ?, ?, false, ?)'
+                'INSERT INTO User (FullName, Email, Password, Verified, Salt) VALUES (?, ?, ?, false, ?)'
             connection.query(
                 query,
                 [fullName, email, hash, salt],
