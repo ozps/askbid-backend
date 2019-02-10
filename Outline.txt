@@ -1,7 +1,5 @@
-Sprint 2 
-    User system(Old+Verify+Update)
-    Admin system    
-    Order(Ask+Bid) system
+Sprint 3
+    Match+Payment system
 
 Table
 •User
@@ -25,17 +23,17 @@ Table
     -ItemClicked: int
 •Order //Ask+Bid ขาย,ซื้อได้ทีละอย่าง แต่อย่างละหลายชิ้น ต่อ 1 record
     -OrderID: int
-    -Flag: (Ask:0,Bid:1)
     -UserID: int // Store in localStorage
     -ItemID: int // Get all items that sorted by name
     -ItemSize: nvarchar (USx,UKx,S,M,L)
-    -ItemAmount: int // Match บางส่วนได้ ถ้่าเหลือ 0 จึงลบรายการ
+    -OrderAmount: int // Match บางส่วนได้ ถ้่าเหลือ 0 จึงลบรายการ
     -OrderPrice: float // ราคาต่อชิ้น
+    -FlagAB: (Ask:0,Bid:1)
 •Match
     -MatchID: int
     -AskOrderID: int
     -BidOrderID: int
-    -OrderAmount: int
+    -TotalAmount: int
     -MatchPrice: float // ราคาทั้งหมด
 
 
