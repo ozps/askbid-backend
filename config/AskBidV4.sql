@@ -48,6 +48,40 @@ INSERT INTO `Item` VALUES (1,'sneaker1.jpg','Nike','Jordan 1 Retro High','Neutra
 UNLOCK TABLES;
 
 --
+-- Table structure for table `Order`
+--
+
+DROP TABLE IF EXISTS `Order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `Order` (
+  `OrderID` int(11) NOT NULL AUTO_INCREMENT,
+  `UserID` int(11) NOT NULL,
+  `ItemID` int(11) NOT NULL,
+  `ItemSize` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `OrderAmount` int(11) NOT NULL,
+  `OrderPrice` float NOT NULL,
+  `FlagAB` tinyint(4) NOT NULL,
+  PRIMARY KEY (`OrderID`),
+  UNIQUE KEY `OrderID_UNIQUE` (`OrderID`),
+  KEY `ItemID_idx` (`ItemID`),
+  KEY `UserID_idx` (`UserID`),
+  CONSTRAINT `ItemID` FOREIGN KEY (`ItemID`) REFERENCES `item` (`itemid`),
+  CONSTRAINT `UserID` FOREIGN KEY (`UserID`) REFERENCES `user` (`userid`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Order`
+--
+
+LOCK TABLES `Order` WRITE;
+/*!40000 ALTER TABLE `Order` DISABLE KEYS */;
+INSERT INTO `Order` VALUES (1,2,5,'US10.5',1,11000,0),(2,3,5,'US10',1,13000,1),(3,2,1,'US9',1,7000.5,0),(4,2,3,'US7',1,5555.5,0);
+/*!40000 ALTER TABLE `Order` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `User`
 --
 
@@ -61,13 +95,13 @@ CREATE TABLE `User` (
   `Password` varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `Address` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `Tel` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `Balance` float DEFAULT NULL,
+  `Balance` double DEFAULT NULL,
   `BankNo` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `Verified` tinyint(4) NOT NULL,
   `Salt` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`UserID`),
   UNIQUE KEY `UserID_UNIQUE` (`UserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +110,7 @@ CREATE TABLE `User` (
 
 LOCK TABLES `User` WRITE;
 /*!40000 ALTER TABLE `User` DISABLE KEYS */;
-INSERT INTO `User` VALUES (1,'Ask Bid','askbid.se@gmail.com','$2b$10$Qt8/kgV2RbITq9K8P1tbOerngULYzOSjnE7vYcP6VKoC2BeeNRj/6',NULL,NULL,NULL,NULL,2,'$2b$10$Qt8/kgV2RbITq9K8P1tbOe'),(2,'Test UpdateP','testz@gmail.com','$2b$10$lOpAvaQqjG5P/fXLpORAsOjPSsJMQjvkg2rbCF2ckzd75OGtm8TDq','Italy','1234',1500.5,'99999',1,'$2b$10$lOpAvaQqjG5P/fXLpORAsO'),(3,'Testx','testx@gmail.com','$2b$10$neRuYs41N8flFYlVnzVgPeCZMaO.rJPGdJca.UnoAu6RLe2rVgFzy',NULL,NULL,NULL,NULL,0,'$2b$10$neRuYs41N8flFYlVnzVgPe');
+INSERT INTO `User` VALUES (1,'Ask Bid','askbid.se@gmail.com','$2b$10$Qt8/kgV2RbITq9K8P1tbOerngULYzOSjnE7vYcP6VKoC2BeeNRj/6','Thailand','1150',999999.9,'1234567890',2,'$2b$10$Qt8/kgV2RbITq9K8P1tbOe'),(2,'Demo Ask','demo.ask@gmail.com','$2b$10$lOpAvaQqjG5P/fXLpORAsOjPSsJMQjvkg2rbCF2ckzd75OGtm8TDq','Italy','1234',200000.5,'0000000000',1,'$2b$10$lOpAvaQqjG5P/fXLpORAsO'),(3,'Demo Bid','demo.bid@gmail.com','$2b$10$neRuYs41N8flFYlVnzVgPeCZMaO.rJPGdJca.UnoAu6RLe2rVgFzy','Norway','1021',150000.5,'1111111111',1,'$2b$10$neRuYs41N8flFYlVnzVgPe'),(4,'Demo NV','demo.nv@gmail.com','$2b$10$jz4OfDZOOc5/1BslSEj1uOWYvOU5ZUFcJj3asW/FdwFMka6e0OFhi',NULL,NULL,NULL,NULL,0,'$2b$10$jz4OfDZOOc5/1BslSEj1uO');
 /*!40000 ALTER TABLE `User` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -89,4 +123,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-10 20:13:36
+-- Dump completed on 2019-02-10 22:10:43

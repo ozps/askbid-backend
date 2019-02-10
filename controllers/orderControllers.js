@@ -70,10 +70,36 @@ const getBidPrice = (req, res) => {
 }
 
 const updateOrder = (req, res) => {
-    // let query = 'UPDATE `Order` SET ItemSize = ?, OrderAmount = ?, OrderPrice = ?, FlagAB = ? WHERE OrderID = ?'
+    let query =
+        'UPDATE `Order` SET ItemSize = ?, OrderAmount = ?, OrderPrice = ?, FlagAB = ? WHERE OrderID = ? AND UserID = ?'
+    connection.query(
+        query,
+        [
+            req.body.itemSize,
+            req.body.orderAmount,
+            req.body.orderPrice,
+            req.body.flagAB,
+            req.body.orderID,
+            req.body.userID
+        ],
+        (error, results) => {
+            if (error) throw error
+            res.status(200).json({ status: 'success' })
+        }
+    )
 }
 
-const deleteOrder = (req, res) => {}
+const deleteOrder = (req, res) => {
+    let query = 'DELETE FROM `Order` WHERE OrderID = ? AND UserID = ?'
+    connection.query(
+        query,
+        [req.body.orderID, req.body.userID],
+        (error, results) => {
+            if (error) throw error
+            res.status(200).json({ status: 'success' })
+        }
+    )
+}
 
 module.exports = {
     createOrder,
