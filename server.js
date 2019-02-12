@@ -58,22 +58,11 @@ app.use('/match', require('./routes/matchRoutes'))
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
 app.use(express.static('public'))
 
-app.post('/upload', (req, res) => {
-    const successUpload = () => {
-        res.status(200).json({ status: 'success' })
+app.post('/upload', upload, (req, res) => {
+    if (req.file) {
+        return res.status(200).json({ status: 'success' })
     }
-    const failUpload = errorType => {
-        return res.status(406).json({ status: 'fail', errorType: errorType })
-    }
-    upload(req, res, error => {
-        if (error || req.fileExtError) {
-            failUpload(req.fileExtError)
-            res.end()
-        } else {
-            successUpload()
-            res.end()
-        }
-    })
+    return res.status(406).json({ status: 'fail' })
 })
 
 const PORT = process.env.PORT || 5000
