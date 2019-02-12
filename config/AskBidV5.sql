@@ -4,7 +4,7 @@ USE `AskBid`;
 --
 -- Host: 127.0.0.1    Database: AskBid
 -- ------------------------------------------------------
--- Server version	8.0.13
+-- Server version	8.0.15
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -68,7 +68,7 @@ CREATE TABLE `Order` (
   KEY `UserID_idx` (`UserID`),
   CONSTRAINT `ItemID` FOREIGN KEY (`ItemID`) REFERENCES `item` (`itemid`),
   CONSTRAINT `UserID` FOREIGN KEY (`UserID`) REFERENCES `user` (`userid`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -77,7 +77,7 @@ CREATE TABLE `Order` (
 
 LOCK TABLES `Order` WRITE;
 /*!40000 ALTER TABLE `Order` DISABLE KEYS */;
-INSERT INTO `Order` VALUES (1,2,5,'US10.5',1,11000,0),(2,3,5,'US10',1,13000,1),(3,2,1,'US9',1,7000.5,0),(4,2,3,'US7',1,5555.5,0);
+INSERT INTO `Order` VALUES (1,2,5,'US10.5',1,11000,0),(2,3,5,'US10',1,13000,1),(3,2,1,'US9',1,7000.5,0),(4,2,3,'US7',1,5555.5,0),(5,3,2,'UK10',1,10000.5,1),(6,3,1,'UK9',1,9000,1),(7,2,2,'US5.5',1,6999,0);
 /*!40000 ALTER TABLE `Order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -123,4 +123,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-02-10 22:10:43
+-- Dump completed on 2019-02-12  8:29:15
