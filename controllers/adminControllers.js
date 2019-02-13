@@ -1,26 +1,28 @@
 const connection = require('../models/dbConnection')
 
 const getAllList = async (req, res) => {
-    var fs = require('fs')
-    var resultsArray = []
-    var allList = []
-    const dir = fs.readdirSync('./public/cards/')
-    for (const file of dir) {
-        let userID = Number(file.substr(9, 1))
-        let query = 'SELECT Verified From User WHERE UserID = ?'
-        await new Promise(res => {
-            connection.query(query, [userID], (error, results) => {
-                let result = JSON.parse(JSON.stringify(results))
-                resultsArray.push({
-                    userID: userID,
-                    verified: result[0].Verified
+    if (req.body.userID === 0) {
+        var fs = require('fs')
+        var resultsArray = []
+        var allList = []
+        const dir = fs.readdirSync('./public/cards/')
+        for (const file of dir) {
+            let userID = Number(file.substr(9, 1))
+            let query = 'SELECT Verified From User WHERE UserID = ?'
+            await new Promise(res => {
+                connection.query(query, [userID], (error, results) => {
+                    let result = JSON.parse(JSON.stringify(results))
+                    resultsArray.push({
+                        userID: userID,
+                        verified: result[0].Verified
+                    })
+                    res()
                 })
-                res()
             })
-        })
-        allList.push(Number(file.substr(9, 1)))
-    }
-    res.status(200).json(resultsArray)
+            allList.push(Number(file.substr(9, 1)))
+        }
+        res.status(200).json(resultsArray)
+    } else res.status(401).json({ status: 'fail' })
 }
 
 const verify = (req, res) => {

@@ -27,7 +27,7 @@ const upload = multer({
 }).single('card')
 
 // Get all list of image of cards
-router.get('/get_all_list', adminControllers.getAllList)
+router.post('/get_all_list', adminControllers.getAllList)
 
 // Verify
 router.post('/verify', adminControllers.verify)
