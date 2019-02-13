@@ -8,13 +8,17 @@ const getAllList = async (req, res) => {
         const dir = fs.readdirSync('./public/cards/')
         for (const file of dir) {
             let userID = Number(file.substr(9, 1))
-            let query = 'SELECT Verified From User WHERE UserID = ?'
+            let query = 'SELECT * From User WHERE UserID = ?'
             await new Promise(res => {
                 connection.query(query, [userID], (error, results) => {
                     let result = JSON.parse(JSON.stringify(results))
+                    const { FullName, Email, Tel, Verified } = result[0]
                     resultsArray.push({
                         userID: userID,
-                        verified: result[0].Verified
+                        fullName: FullName,
+                        email: Email,
+                        tel: Tel,
+                        verified: Verified
                     })
                     res()
                 })
