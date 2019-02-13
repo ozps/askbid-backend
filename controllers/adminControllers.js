@@ -4,7 +4,7 @@ const getAllList = async (req, res) => {
     var fs = require('fs')
     var resultsArray = []
     var allList = []
-    const dir = fs.readdirSync('./public/uploads/')
+    const dir = fs.readdirSync('./public/cards/')
     for (const file of dir) {
         let userID = Number(file.substr(9, 1))
         let query = 'SELECT Verified From User WHERE UserID = ?'
