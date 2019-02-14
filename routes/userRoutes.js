@@ -1,6 +1,7 @@
 const { Router } = require('express')
 const userControllers = require('../controllers/userControllers')
 const router = new Router()
+const fs = require('fs')
 const multer = require('multer')
 const path = require('path')
 const storageCard = multer.diskStorage({
@@ -74,6 +75,17 @@ router.post('/upload_avatar_image', uploadAvatar, (req, res) => {
         return res.status(200).json({ status: 'success' })
     }
     return res.status(406).json({ status: 'fail' })
+})
+
+// Get user avatar image
+router.post('/get_avatar_image', (req, res) => {
+    let pathImg =
+        __dirname + `/../public/avatars/UserAvatar-${req.body.userID}.jpg`
+    if (fs.existsSync(pathImg)) {
+        res.status(200).sendFile(`UserAvatar-${req.body.userID}.jpg`, {
+            root: __dirname + '/../public/avatars/'
+        })
+    } else res.status(404).json({ status: 'fail' })
 })
 
 module.exports = router

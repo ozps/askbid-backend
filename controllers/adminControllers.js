@@ -28,7 +28,7 @@ const getAllList = async (req, res) => {
     connection.query(queryCheck, [req.body.userID], (error, results) => {
         if (error) throw error
         result = JSON.parse(JSON.stringify(results))
-        if (result[0].Verified == 2) res.status(200).json(resultsArray)
+        if (result[0].Verified === 2) res.status(200).json(resultsArray)
         else res.status(401).json({ status: 'fail' })
     })
 }
