@@ -48,6 +48,10 @@ const uploadAvatar = multer({
         cb(null, true)
     }
 }).single('avatar')
+const base64_encode = file => {
+    let bitmap = fs.readFileSync(file)
+    return new Buffer(bitmap).toString('base64')
+}
 
 // Sign up
 router.post('/sign_up', userControllers.signUp)
@@ -82,9 +86,7 @@ router.post('/get_avatar_image', (req, res) => {
     let pathImg =
         __dirname + `/../public/avatars/UserAvatar-${req.body.userID}.jpg`
     if (fs.existsSync(pathImg)) {
-        res.status(200).sendFile(`UserAvatar-${req.body.userID}.jpg`, {
-            root: __dirname + '/../public/avatars/'
-        })
+        res.status(200).json({ image64: base64_encode(pathImg) })
     } else res.status(404).json({ status: 'fail' })
 })
 

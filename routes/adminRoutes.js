@@ -26,6 +26,10 @@ const upload = multer({
         cb(null, true)
     }
 }).single('card')
+const base64_encode = file => {
+    let bitmap = fs.readFileSync(file)
+    return new Buffer(bitmap).toString('base64')
+}
 
 // Get all list of image of cards
 router.post('/get_all_list', adminControllers.getAllList)
@@ -45,9 +49,7 @@ router.post('/upload_item_image', upload, (req, res) => {
 router.post('/get_card_image', (req, res) => {
     let pathImg = __dirname + `/../public/cards/UserCard-${req.body.userID}.jpg`
     if (fs.existsSync(pathImg)) {
-        res.status(200).sendFile(`UserCard-${req.body.userID}.jpg`, {
-            root: __dirname + '/../public/cards/'
-        })
+        res.status(200).json({ image64: base64_encode(pathImg) })
     } else res.status(404).json({ status: 'fail' })
 })
 
