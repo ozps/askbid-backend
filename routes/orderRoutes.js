@@ -5,8 +5,11 @@ const router = new Router()
 // Create bid or ask order
 router.post('/create_order', orderControllers.createOrder)
 
-// Get all bid or ask orders (UserID)
+// Get all bid or ask orders for each user (UserID)
 router.get('/get_user_orders/:id', orderControllers.getUserOrders)
+
+// Get all bid or ask orders for each item (ItemID)
+router.get('/get_item_orders/:id', orderControllers.getItemOrders)
 
 // Get bid or ask order (OrderID)
 router.get('/get_detail_order/:id', orderControllers.getDetailOrder)

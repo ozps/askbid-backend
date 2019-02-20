@@ -39,11 +39,14 @@ Table
     -NotiID: int
     -UserID: int
     -FlagRead: (Unread:0,Read:1)
-เพิ่ม GetItemOrder, ทำ AdminUploadItem ต่อ
-
+Unfinished list:
+    -AdminUploadItem
+    -MatchedOrder
+    -Payment
+    -Notification
 
     คนซื้อ              ระบบ                คนขาย
     -กดซื้อ             -รับเงินคนซื้อ+หัก%      -รับที่อยู่คนซื้อ email[2]
     -กดรับของ[1]       -ส่งเงินให้คนขาย       -แจ้งเงินเข้า email
     PS. [1] การตั้งระบบ Hold 
-        [2] ดูวิธีเขียนรับ-ส่ง email
+        [2] เขียนรับ-ส่ง email

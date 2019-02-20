@@ -36,6 +36,15 @@ const getUserOrders = (req, res) => {
     })
 }
 
+const getItemOrders = (req, res) => {
+    let query = 'SELECT OrderID FROM Item NATURAL JOIN `Order` WHERE ItemID = ?'
+    connection.query(query, [req.params.id], (error, results) => {
+        if (error) throw error
+        queryResults = JSON.parse(JSON.stringify(results))
+        res.status(200).json(queryResults)
+    })
+}
+
 const getDetailOrder = (req, res) => {
     let query = 'SELECT * FROM `Order` WHERE OrderID = ?'
     connection.query(query, [req.params.id], (error, results) => {
@@ -104,6 +113,7 @@ const deleteOrder = (req, res) => {
 module.exports = {
     createOrder,
     getUserOrders,
+    getItemOrders,
     getDetailOrder,
     getAskPrice,
     getBidPrice,
