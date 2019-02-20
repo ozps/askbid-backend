@@ -31,10 +31,15 @@ Table
     -FlagAB: (Ask:0,Bid:1)
 •Match
     -MatchID: int
-    -AskOrderID: int
-    -BidOrderID: int
+    -CustomerID: int
+    -OrderID: [int]
     -TotalAmount: int
     -MatchPrice: float // ราคาทั้งหมด
+•Notification
+    -NotiID: int
+    -UserID: int
+    -FlagRead: (Unread:0,Read:1)
+เพิ่ม GetItemOrder, ทำ AdminUploadItem ต่อ
 
 
     คนซื้อ              ระบบ                คนขาย

@@ -81,13 +81,4 @@ router.post('/upload_avatar_image', uploadAvatar, (req, res) => {
     return res.status(406).json({ status: 'fail' })
 })
 
-// Get user avatar image
-router.post('/get_avatar_image', (req, res) => {
-    let pathImg =
-        __dirname + `/../public/avatars/UserAvatar-${req.body.userID}.jpg`
-    if (fs.existsSync(pathImg)) {
-        res.status(200).json({ image64: base64_encode(pathImg) })
-    } else res.status(404).json({ status: 'fail' })
-})
-
 module.exports = router

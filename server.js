@@ -17,6 +17,7 @@ app.use(
         path: [
             /\/item*/,
             /\/images*/,
+            /\/avatars*/,
             /\/order\/get_ask_price*/,
             /\/order\/get_bid_price*/,
             '/user/sign_in',
