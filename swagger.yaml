@@ -6,9 +6,9 @@ info:
 host: localhost:5000
 tags:
 - name: item
-  description: Every thing about Item
+  description: Everything about Item
 - name: user
-  description: Operations about user
+  description: Operations about User
 schemes:
 - http
 - https
@@ -140,6 +140,13 @@ paths:
             properties:
               status:
                 type: string
+        409:
+          description: The request could not be completed due to a conflict with the current state.
+          schema:
+            type: object
+            properties:
+              status:
+                type: string
   /user/sign_in:
     post:
       tags:
@@ -203,12 +210,46 @@ definitions:
       ItemClicked:
         type: integer
         format: int64
+  User:
+    type: object
+    properties:
+      UserID:
+        type: integer
+        format: int64
+      FullName:
+        type: string
+        description: Full name of a user
+      IDCard:
+        type: string
+        description: ID card of a user
+      Email: 
+        type: string
+        description: Email of a user
+      Password:
+        type: string
+        description: Password of a user
+      Address:
+        type: string
+        description: Address of a user
+      Tel:
+        type: string
+        description: Mobile number of a user
+      Balance:
+        type: double
+        description: Balance of a user
+      BankNo:
+        type: string
+        description: Bank account number of a user
+      Verified:
+        type: integer
+        format: int32
+        description: Verify status of a user
+      Salt:
+        type: string
+        description: Salt text of a user
       
-
-
-    -ItemImage: img. path
-    -ItemReleased: date
-    -ItemClicked: int
+        
+      
 
 
 

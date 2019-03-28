@@ -1,10 +1,16 @@
-Sprint 3
-    Match+Payment system
+Unfinished list:
+-เพิ่ม UserIDCard(Attr.), Match(Table), Notification(Table), Payment(Table)
+-AdminUploadItem
+-AdminUserBan
+-MatchedOrder
+-Payment
+-Notification
 
 Table
 •User
     *-UserID: int
     *-Fullname: nvarchar
+    *-IDCard: nvarchar
     *-Email: nvarchar
     *-Password: nvarchar
     -Address: nvarchar
@@ -23,27 +29,28 @@ Table
     -ItemClicked: int
 •Order //Ask+Bid ขาย,ซื้อได้ทีละอย่าง แต่อย่างละหลายชิ้น ต่อ 1 record
     -OrderID: int
-    -UserID: int // Store in localStorage
-    -ItemID: int // Get all items that sorted by name
+    -UserID: int // Store in localStorage   => OrderUserID
+    -ItemID: int // Get all items that sorted by name   => OrderItemID
     -ItemSize: nvarchar (USx,UKx,S,M,L)
     -OrderAmount: int // Match บางส่วนได้ ถ้่าเหลือ 0 จึงลบรายการ
     -OrderPrice: float // ราคาต่อชิ้น
     -FlagAB: (Ask:0,Bid:1)
 •Match
     -MatchID: int
-    -CustomerID: int
-    -OrderID: [int]
+    -MatchUserID: int // คนทำรายการ
+    -MatchOrderID: [int] // ในนี้มีคนขาย
     -TotalAmount: int
-    -MatchPrice: float // ราคาทั้งหมด
+    -TotalPrice: float // ราคาทั้งหมด
 •Notification
-    -NotiID: int
-    -UserID: int
-    -FlagRead: (Unread:0,Read:1)
-Unfinished list:
-    -AdminUploadItem
-    -MatchedOrder
-    -Payment
-    -Notification
+    -NotifID: int
+    -NotifUserID: int
+    -Content: nvarchar
+    -FlagRN: (Read:0,Unread:1)
+•Payment
+    -PayID: int
+    -PayUserID: int
+    -PayMatchID: int
+    -Cost: float
 
     คนซื้อ              ระบบ                คนขาย
     -กดซื้อ             -รับเงินคนซื้อ+หัก%      -รับที่อยู่คนซื้อ email[2]
