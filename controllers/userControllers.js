@@ -5,14 +5,14 @@ const jwt = require('jsonwebtoken')
 const validator = require('email-validator')
 const saltRounds = 10
 
-const register = (fullName, email, password) => {
+const register = (fullName, cardNo, email, password) => {
     bcrypt.genSalt(saltRounds, function(error, salt) {
         bcrypt.hash(password, salt, function(error, hash) {
             let query =
-                'INSERT INTO User (FullName, Email, Password, Verified, Salt) VALUES (?, ?, ?, false, ?)'
+                'INSERT INTO `user` (full_name, card_no, email, password) VALUES (?, ?, ?, ?)'
             connection.query(
                 query,
-                [fullName, email, hash, salt],
+                [fullName, cardNo, email, hash],
                 (error, results) => {
                     if (error) throw error
                 }
@@ -22,30 +22,39 @@ const register = (fullName, email, password) => {
 }
 
 const signUp = (req, res) => {
-    if (validator.validate(req.body.email)) {
-        let queryEmail = 'SELECT * FROM User WHERE Email = ?'
-        connection.query(queryEmail, [req.body.email], (error, results) => {
-            if (error) throw error
-            result = JSON.parse(JSON.stringify(results))
-            if (result.length == 0) {
-                register(req.body.fullName, req.body.email, req.body.password)
-                res.status(200).json({ status: 'success' })
-            } else {
-                res.status(409).json({ status: 'fail' })
+    if (validator.validate(req.body.email) && req.body.cardNo.length === 13) {
+        let query = 'SELECT * FROM `user` WHERE email = ? OR card_no = ?'
+        connection.query(
+            query,
+            [req.body.email, req.body.cardNo],
+            (error, results) => {
+                if (error) throw error
+                result = JSON.parse(JSON.stringify(results))
+                if (result.length === 0) {
+                    register(
+                        req.body.fullName,
+                        req.body.cardNo,
+                        req.body.email,
+                        req.body.password
+                    )
+                    res.status(200).json({ status: 'success' })
+                } else {
+                    res.status(409).json({ status: 'fail' })
+                }
             }
-        })
+        )
     } else res.status(409).json({ status: 'fail' })
 }
 
 const signIn = (req, res) => {
     if (validator.validate(req.body.email)) {
-        let query = 'SELECT * FROM User WHERE Email = ?'
+        let query = 'SELECT * FROM `user` WHERE email = ?'
         let checkPass = false
         connection.query(query, [req.body.email], (error, results) => {
             if (error) throw error
             result = JSON.parse(JSON.stringify(results))
             if (result.length > 0) {
-                password = result[0].Password
+                password = result[0].password
                 checkPass = bcrypt.compareSync(req.body.password, password)
             }
             if (checkPass) {
@@ -55,8 +64,8 @@ const signIn = (req, res) => {
                 res.status(200).json({
                     status: 'success',
                     token: token,
-                    userID: result[0].UserID,
-                    verified: result[0].Verified
+                    userId: result[0].id,
+                    level: result[0].level
                 })
             } else {
                 res.status(401).json({ status: 'fail' })
@@ -65,18 +74,29 @@ const signIn = (req, res) => {
     } else res.status(401).json({ status: 'fail' })
 }
 
+const getProfile = (req, res) => {
+    let query = 'SELECT * FROM `user` WHERE id = ?'
+    connection.query(query, [req.body.userId], (error, results) => {
+        if (error) throw error
+        result = JSON.parse(JSON.stringify(results))
+        if (result.length !== 0)
+            res.status(200).json({ status: 'success', result: result[0] })
+        else res.status(403).json({ status: 'fail' })
+    })
+}
+
 const updateProfile = (req, res) => {
     let query =
-        'UPDATE User SET FullName = ?, Address = ?, Tel = ?, Balance = ?, BankNo = ? WHERE UserID = ?'
+        'UPDATE `user` SET full_name = ?, address = ?, tel_no = ?, balance = ?, bank_no = ? WHERE id = ?'
     connection.query(
         query,
         [
             req.body.fullName,
             req.body.address,
-            req.body.tel,
+            req.body.telNo,
             req.body.balance,
             req.body.bankNo,
-            req.body.userID
+            req.body.userId
         ],
         (error, results) => {
             if (error) throw error
@@ -85,19 +105,25 @@ const updateProfile = (req, res) => {
     )
 }
 
-const getDetailUser = (req, res) => {
-    let query =
-        'SELECT FullName, Address, Tel, Balance, BankNo FROM User WHERE UserID = ?'
-    connection.query(query, [req.body.userID], (error, results) => {
+const addAvatar = (name, id) => {
+    let query = 'UPDATE `user` SET avatar_image = ? WHERE id = ?'
+    connection.query(query, [name, id], (error, results) => {
         if (error) throw error
-        queryResults = JSON.parse(JSON.stringify(results))
-        res.status(200).json(queryResults[0])
+    })
+}
+
+const addCard = (name, id) => {
+    let query = 'UPDATE `user` SET card_image = ? WHERE id = ?'
+    connection.query(query, [name, id], (error, results) => {
+        if (error) throw error
     })
 }
 
 module.exports = {
     signUp,
     signIn,
+    getProfile,
     updateProfile,
-    getDetailUser
+    addAvatar,
+    addCard
 }

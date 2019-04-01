@@ -1,0 +1,89 @@
+Table
+•user
+    -id: int
+    -full_name: nvarchar
+    -card_no: nvarchar  
+    -email: nvarchar
+    -password: nvarchar
+    -address: nvarchar
+    -tel_no: nvarchar
+    -balance: float
+    -bank_no: nvarchar
+    -avatar_image: nvarchar
+    -card_image: nvarchar
+    -level: (ban:-1,normal:0,verified:1,admin:2)
+
+•item 
+    -id: int
+    -brand: nvarchar
+    -desc: nvarchar
+    -color: nvarchar
+    -image: nvarchar
+    -released_date: date
+    -visited_count: int
+
+•order => 1 order per 1 item
+    -id: int
+    -user_id: int 
+    -item_id: int 
+    -size: nvarchar 
+    -price: float 
+    -type: (Ask:0,Bid:1)
+    -published_date: date
+    -out_of_stock: (No:0,Yes:1) 
+
+•match
+    -id: int
+    -user_id: int 
+    -order_id: [int] 
+    -amount: int
+    -total_price: float 
+    -paid_date: date
+    -receive: (No:0, Yes:1)
+    -stamp_date: date
+
+API
+•/users
+sign_up 			POST in-full_name,card_no,email,password
+sign_in 			POST in-email,password
+get_profile  		GET in-user_id
+update_profile  	POST in-`user`
+-upload_avatar      POST in-user_id
+-upload_card 		POST in-user_id
+
+•/admin (verified=2)
+-get_all_cards 		POST
+-verify  			POST in-user_id (+email_noti)
+-ban  				POST in-user_id (+email_noti)
+-add_item 		 	POST in-`item` (permanent)
+-payment  			POST in-total_price*0.97,bank_no
+
+•/items
+-get_all_items		GET
+-get_new_items		GET
+-get_popular_items	GET
+-get_item 		 	GET in-item_id
+-search_items 		POST in-detail
+
+•/orders
+-create_order 		POST in-`order` (verified=1)
+-update_order 		POST in-`order`
+-delete_order		POST in-order_id
+-get_user_order 	POST in-user_id
+-get_order 			POST in-order_id
+-get_ask_price 		GET in-item_id
+-get_bid_price 		GET in-item_id
+
+•/match (verified>0)
+-place_order 		POST in-`match` (+email_noti ถึงคนตั้ง,+pay ไปที่ admin)
+-get_user_match 	POST in-user_id
+-get_bill 			POST in-match_id
+-update_stamp 		POST in-stamp_date,received (+email_noti ถึงคนตั้งได้รับเงิน)
+
+Note!
+-การรับ,ส่ง email
+-การตั้งเวลา admin auto payment คิดจาก stamp_date - paid_date
+-แก้ swagger
+-Deployment
+-Token pages
+
