@@ -3,12 +3,16 @@ const userControllers = require('../controllers/userControllers')
 const router = new Router()
 const multer = require('multer')
 const path = require('path')
+const fs = require('fs')
 const gm = require('gm')
 
 const storageCard = multer.diskStorage({
     destination: './public/cards/',
     filename: (req, file, cb) => {
-        cb(null, String(req.body.img_name) + path.extname(file.originalname))
+        cb(
+            null,
+            'card_' + String(req.body.userId) + path.extname(file.originalname)
+        )
     }
 })
 
@@ -27,7 +31,12 @@ const uploadCard = multer({
 const storageAvatar = multer.diskStorage({
     destination: './public/avatars/',
     filename: (req, file, cb) => {
-        cb(null, String(req.body.img_name) + path.extname(file.originalname))
+        cb(
+            null,
+            'avatar_' +
+                String(req.body.userId) +
+                path.extname(file.originalname)
+        )
     }
 })
 
@@ -58,14 +67,32 @@ router.post('/update_profile', userControllers.updateProfile)
 // Upload avatar image
 router.post('/upload_avatar', uploadAvatar, (req, res) => {
     if (req.file) {
+        let random = Math.random()
+            .toString(36)
+            .substring(7)
+        let rawName =
+            'avatar_' +
+            String(req.body.userId) +
+            path.extname(req.file.originalname)
         let fileName =
-            String(req.body.img_name) + path.extname(req.file.originalname)
-        userControllers.addAvatar(fileName, req.body.userId)
-        gm('./public/avatars/' + fileName)
+            'avatar_' +
+            String(req.body.userId) +
+            '_' +
+            random +
+            path.extname(req.file.originalname)
+        userControllers.addCard(fileName, req.body.userId)
+        gm('./public/avatars/' + rawName)
             .resize(180, 180, '!')
             .write('./public/avatars/' + fileName, error => {
-                if (!error) console.log('resized')
+                if (!error) {
+                    console.log('Image resized')
+                    fs.unlink('./public/avatars/' + rawName, err => {
+                        if (err) throw err
+                        console.log('Raw deleted!')
+                    })
+                }
             })
+
         return res.status(200).json({ status: 'success' })
     }
     return res.status(406).json({ status: 'fail' })
@@ -74,14 +101,32 @@ router.post('/upload_avatar', uploadAvatar, (req, res) => {
 // Upload card image
 router.post('/upload_card', uploadCard, (req, res) => {
     if (req.file) {
+        let random = Math.random()
+            .toString(36)
+            .substring(7)
+        let rawName =
+            'card_' +
+            String(req.body.userId) +
+            path.extname(req.file.originalname)
         let fileName =
-            String(req.body.img_name) + path.extname(req.file.originalname)
+            'card_' +
+            String(req.body.userId) +
+            '_' +
+            random +
+            path.extname(req.file.originalname)
         userControllers.addCard(fileName, req.body.userId)
-        gm('./public/cards/' + fileName)
+        gm('./public/cards/' + rawName)
             .resize(450, 300, '!')
             .write('./public/cards/' + fileName, error => {
-                if (!error) console.log('resized')
+                if (!error) {
+                    console.log('Image resized')
+                    fs.unlink('./public/cards/' + rawName, err => {
+                        if (err) throw err
+                        console.log('Raw deleted!')
+                    })
+                }
             })
+
         return res.status(200).json({ status: 'success' })
     }
     return res.status(406).json({ status: 'fail' })
