@@ -1,60 +1,77 @@
 const connection = require('../models/dbConnection')
-const fs = require('fs')
 
-const getAllList = async (req, res) => {
-    var resultsArray = []
-    var allList = []
-    const dir = fs.readdirSync('./public/cards/')
-    for (const file of dir) {
-        let userID = Number(file.substr(9, 1))
-        let query = 'SELECT * From User WHERE UserID = ?'
-        await new Promise(res => {
-            connection.query(query, [userID], (error, results) => {
-                let result = JSON.parse(JSON.stringify(results))
-                const { FullName, Email, Tel, Verified } = result[0]
-                resultsArray.push({
-                    userID: userID,
-                    fullName: FullName,
-                    email: Email,
-                    tel: Tel,
-                    verified: Verified
-                })
-                res()
+const checkAdmin = level => {
+    return level === 2 ? true : false
+}
+
+const getAllCards = (req, res) => {
+    if (checkAdmin(req.body.level)) {
+        let query = 'SELECT * FROM `user` WHERE card_image IS NOT NULL'
+        connection.query(query, (error, results) => {
+            if (error) throw error
+            result = JSON.parse(JSON.stringify(results))
+            res.status(200).json({
+                status: 'success',
+                fullName: result[0].full_name,
+                email: result[0].email,
+                telNo: result[0].tel_no,
+                cardImage: result[0].card_image
             })
         })
-        allList.push(Number(file.substr(9, 1)))
-    }
-    let queryCheck = 'SELECT Verified FROM User WHERE UserID = ?'
-    connection.query(queryCheck, [req.body.userID], (error, results) => {
-        if (error) throw error
-        result = JSON.parse(JSON.stringify(results))
-        if (result[0].Verified === 2) res.status(200).json(resultsArray)
-        else res.status(401).json({ status: 'fail' })
-    })
+    } else res.status(401).json({ status: 'fail' })
 }
 
 const verify = (req, res) => {
-    let queryCheck = 'SELECT Verified FROM User WHERE UserID = ?'
-    connection.query(queryCheck, [req.body.userID], (error, results) => {
+    if (checkAdmin(req.body.level)) {
+        let query = 'UPDATE `user` SET level = 1 WHERE id = ?'
+        connection.query(query, [req.body.userId], (error, results) => {
+            if (error) throw error
+            res.status(200).json({ status: 'success' })
+        })
+    } else res.status(401).json({ status: 'fail' })
+}
+
+const ban = (req, res) => {
+    if (checkAdmin(req.body.level)) {
+        let query = 'UPDATE `user` SET level = -1 WHERE id = ?'
+        connection.query(query, [req.body.userId], (error, results) => {
+            if (error) throw error
+            res.status(200).json({ status: 'success' })
+        })
+    } else res.status(401).json({ status: 'fail' })
+}
+
+const addItem = (req, res) => {
+    if (checkAdmin(req.body.level)) {
+        let query =
+            'INSERT INTO `item` (brand, desc, color, released_date) VALUES (?, ?, ?, ?)'
+        connection.query(
+            query,
+            [
+                req.body.brand,
+                req.body.desc,
+                req.body.color,
+                req.body.releasedDate
+            ],
+            (error, results) => {
+                if (error) throw error
+                res.status(200).json({ status: 'success' })
+            }
+        )
+    } else res.status(401).json({ status: 'fail' })
+}
+
+const addImage = (name, id) => {
+    let query = 'UPDATE `item` SET image = ? WHERE id = ?'
+    connection.query(query, [name, id], (error, results) => {
         if (error) throw error
-        else {
-            result = JSON.parse(JSON.stringify(results))
-            if (result[0].Verified == 2) {
-                let query = 'UPDATE User SET Verified = ? WHERE UserID = ?'
-                connection.query(
-                    query,
-                    [req.body.verified, req.body.targetID],
-                    (err, result) => {
-                        if (error) throw error
-                        res.status(200).json({ status: 'success' })
-                    }
-                )
-            } else res.status(401).json({ status: 'fail' })
-        }
     })
 }
 
 module.exports = {
-    getAllList,
-    verify
+    getAllCards,
+    verify,
+    ban,
+    addItem,
+    addImage
 }

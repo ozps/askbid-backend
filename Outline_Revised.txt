@@ -18,8 +18,8 @@ Table
     -brand: nvarchar
     -desc: nvarchar
     -color: nvarchar
-    -image: nvarchar
     -released_date: date
+    -image: nvarchar
     -visited_count: int
 
 •order => 1 order per 1 item
@@ -52,9 +52,9 @@ upload_avatar       POST in-user_id,file,img_name
 upload_card 		POST in-user_id,file,img_name
 
 •/admin (verified=2)
--get_all_cards 		POST
--verify  			POST in-user_id (+email_noti)
--ban  				POST in-user_id (+email_noti)
+get_all_cards 		POST
+verify  			POST in-user_id (+email_noti)
+ban  				POST in-user_id (+email_noti)
 -add_item 		 	POST in-`item` (permanent)
 -payment  			POST in-total_price*0.97,bank_no
 

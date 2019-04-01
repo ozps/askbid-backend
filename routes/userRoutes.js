@@ -80,7 +80,7 @@ router.post('/upload_avatar', uploadAvatar, (req, res) => {
             '_' +
             random +
             path.extname(req.file.originalname)
-        userControllers.addCard(fileName, req.body.userId)
+        userControllers.addAvatar(fileName, req.body.userId)
         gm('./public/avatars/' + rawName)
             .resize(180, 180, '!')
             .write('./public/avatars/' + fileName, error => {
