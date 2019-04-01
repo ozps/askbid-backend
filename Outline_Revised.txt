@@ -48,8 +48,8 @@ sign_up 			POST in-full_name,card_no,email,password
 sign_in 			POST in-email,password
 get_profile  		GET in-user_id
 update_profile  	POST in-`user`
--upload_avatar      POST in-user_id
--upload_card 		POST in-user_id
+upload_avatar       POST in-user_id,file,img_name
+upload_card 		POST in-user_id,file,img_name
 
 •/admin (verified=2)
 -get_all_cards 		POST
@@ -81,9 +81,13 @@ update_profile  	POST in-`user`
 -update_stamp 		POST in-stamp_date,received (+email_noti ถึงคนตั้งได้รับเงิน)
 
 Note!
--การรับ,ส่ง email
--การตั้งเวลา admin auto payment คิดจาก stamp_date - paid_date
--แก้ swagger
+-Add AskBid.sql at folder config
+-Set pages that can bypass JWT
+-Send & Receive Email
+-Timing Auto Payment
+-Edit Swagger
+-Merge Git Branch 
 -Deployment
--Token pages
+
+
 
