@@ -12,7 +12,7 @@ tags:
 schemes:
     - http
     - https
-securityDefinitions:
+securityDefinitions: # Bearer xxxxxx.yyyyyyy.zzzzzz
     Bearer:
         type: apiKey
         name: Authorization
@@ -246,10 +246,8 @@ paths:
                         properties:
                             status:
                                 type: string
-                            result:
-                                type: object
-                                items:
-                                    $ref: '#/definitions/user'
+                            result: { $ref: '#/definitions/user' }
+
                 403:
                     description: Forbidden.
                     schema:
@@ -257,6 +255,45 @@ paths:
                         properties:
                             status:
                                 type: string
+    /user/update_profile:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - user
+            summary: Update Profile
+            description: Users want to update profile
+            operationId: updateProfile
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: Information of a user
+                  type: object
+                  properties:
+                      fullName:
+                          type: string
+                      address:
+                          type: string
+                      telNo:
+                          type: string
+                      balance:
+                          type: number
+                      bankNo:
+                          type: string
+                      userId:
+                          type: integer
+                          format: int64
+            responses:
+                200:
+                    description: successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+
 definitions:
     item:
         type: object
@@ -276,6 +313,7 @@ definitions:
             released_date:
                 type: string
                 format: date-time
+                description: Released date of an item
             image:
                 type: string
                 description: Image path of an item
@@ -308,7 +346,7 @@ definitions:
                 type: string
                 description: Telephone number of a user
             balance:
-                type: double
+                type: number
                 description: Balance of a user
             bank_no:
                 type: string

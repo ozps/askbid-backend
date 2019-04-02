@@ -55,8 +55,8 @@ sign_up 			POST in-full_name,card_no,email,password
 sign_in 			POST in-email,password
 get_profile  		GET in-user_id
 update_profile  	POST in-`user`
-upload_avatar       POST in-user_id,file,img_name
-upload_card 		POST in-user_id,file,img_name
+$upload_avatar       POST in-user_id,file,img_name
+$upload_card 		POST in-user_id,file,img_name
 
 •/admin (verified=2)
 get_all_cards 		POST
