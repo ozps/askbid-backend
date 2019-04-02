@@ -18,10 +18,12 @@ app.use(
             /\/item*/,
             /\/images*/,
             /\/avatars*/,
-            /\/order\/get_ask_price*/,
-            /\/order\/get_bid_price*/,
             '/user/sign_in',
             '/user/sign_up',
+            '/order/get_all_orders',
+            /\/order\/get_user_orders*/,
+            /\/order\/get_item_orders*/,
+            /\/order\/get_order*/,
             /\/api-docs*/
         ]
     })

@@ -1,122 +1,115 @@
 const connection = require('../models/dbConnection')
 
+const checkVerified = level => {
+    return level > 0 ? true : false
+}
+
 const createOrder = (req, res) => {
-    let checkVerified = 'SELECT Verified FROM User WHERE UserID = ?'
-    connection.query(checkVerified, [req.body.userID], (error, results) => {
+    if (checkVerified(req.body.level)) {
+        let query =
+            'INSERT INTO `order` (user_id, item_id, size, price, type, published_date) VALUES (?, ?, ?, ?, ?, ?)'
+        connection.query(
+            query,
+            [
+                req.body.userId,
+                req.body.itemId,
+                req.body.size,
+                req.body.price,
+                req.body.type,
+                new Date()
+                    .toISOString()
+                    .replace(/T/, ' ')
+                    .replace(/\..+/, '')
+            ],
+            (error, results) => {
+                if (error) throw error
+                res.status(200).json({ status: 'success' })
+            }
+        )
+    } else res.status(401).json({ status: 'fail' })
+}
+
+const getAllOrders = (req, res) => {
+    let query = 'SELECT * FROM `order`'
+    connection.query(query, (error, results) => {
         if (error) throw error
-        let resultVerified = JSON.parse(JSON.stringify(results))
-        if (resultVerified[0].Verified > 0) {
-            let query =
-                'INSERT INTO `Order` (UserID, ItemID, ItemSize, OrderAmount, OrderPrice, FlagAB) VALUES (?, ?, ?, ?, ?, ?)'
-            connection.query(
-                query,
-                [
-                    req.body.userID,
-                    req.body.itemID,
-                    req.body.itemSize,
-                    req.body.orderAmount,
-                    req.body.orderPrice,
-                    req.body.flagAB
-                ],
-                (err, rows) => {
-                    if (err) throw err
-                    res.status(200).json({ status: 'success' })
-                }
-            )
-        } else res.status(401).json({ status: 'fail' })
+        result = JSON.parse(JSON.stringify(results))
+        res.status(200).json(result[0])
     })
 }
 
 const getUserOrders = (req, res) => {
-    let query = 'SELECT OrderID FROM User NATURAL JOIN `Order` WHERE UserID = ?'
+    let query = 'SELECT * FROM `order` WHERE user_id = ?'
     connection.query(query, [req.params.id], (error, results) => {
         if (error) throw error
-        queryResults = JSON.parse(JSON.stringify(results))
-        res.status(200).json(queryResults)
+        result = JSON.parse(JSON.stringify(results))
+        res.status(200).json(result[0])
     })
 }
 
 const getItemOrders = (req, res) => {
-    let query = 'SELECT OrderID FROM Item NATURAL JOIN `Order` WHERE ItemID = ?'
+    let query = 'SELECT * FROM `order` WHERE item_id = ?'
     connection.query(query, [req.params.id], (error, results) => {
         if (error) throw error
-        queryResults = JSON.parse(JSON.stringify(results))
-        res.status(200).json(queryResults)
+        result = JSON.parse(JSON.stringify(results))
+        res.status(200).json(result[0])
     })
 }
 
-const getDetailOrder = (req, res) => {
-    let query = 'SELECT * FROM `Order` WHERE OrderID = ?'
+const getOrder = (req, res) => {
+    let query = 'SELECT * FROM `order` WHERE id = ?'
     connection.query(query, [req.params.id], (error, results) => {
         if (error) throw error
-        queryResults = JSON.parse(JSON.stringify(results))
-        res.status(200).json(queryResults[0])
-    })
-}
-
-const getAskPrice = (req, res) => {
-    let query =
-        'SELECT OrderPrice FROM Item NATURAL JOIN `Order` WHERE FlagAB = 0'
-    connection.query(query, [req.params.id], (error, results) => {
-        let resultsArray = JSON.parse(JSON.stringify(results))
-        resultsArray = resultsArray.sort((a, b) =>
-            a.OrderPrice > b.OrderPrice ? 1 : -1
-        )
-        res.status(200).json(resultsArray)
-    })
-}
-
-const getBidPrice = (req, res) => {
-    let query =
-        'SELECT OrderPrice FROM Item NATURAL JOIN `Order` WHERE FlagAB = 1'
-    connection.query(query, [req.params.id], (error, results) => {
-        let resultsArray = JSON.parse(JSON.stringify(results))
-        resultsArray = resultsArray.sort((a, b) =>
-            a.OrderPrice < b.OrderPrice ? 1 : -1
-        )
-        res.status(200).json(resultsArray)
+        result = JSON.parse(JSON.stringify(results))
+        res.status(200).json(result[0])
     })
 }
 
 const updateOrder = (req, res) => {
-    let query =
-        'UPDATE `Order` SET ItemSize = ?, OrderAmount = ?, OrderPrice = ?, FlagAB = ? WHERE OrderID = ? AND UserID = ?'
-    connection.query(
-        query,
-        [
-            req.body.itemSize,
-            req.body.orderAmount,
-            req.body.orderPrice,
-            req.body.flagAB,
-            req.body.orderID,
-            req.body.userID
-        ],
-        (error, results) => {
-            if (error) throw error
-            res.status(200).json({ status: 'success' })
-        }
-    )
+    if (checkVerified(req.body.level)) {
+        let query =
+            'UPDATE `order` SET size = ?, price = ?, type = ?, published_date = ?  WHERE id = ? AND user_id = ?'
+        connection.query(
+            query,
+            [
+                req.body.size,
+                req.body.price,
+                req.body.type,
+                new Date()
+                    .toISOString()
+                    .replace(/T/, ' ')
+                    .replace(/\..+/, ''),
+                req.body.orderId,
+                req.body.userId
+            ],
+            (error, results) => {
+                if (error) throw error
+                res.status(200).json({ status: 'success' })
+            }
+        )
+    } else res.status(401).json({ status: 'fail' })
 }
 
 const deleteOrder = (req, res) => {
-    let query = 'DELETE FROM `Order` WHERE OrderID = ? AND UserID = ?'
-    connection.query(
-        query,
-        [req.body.orderID, req.body.userID],
-        (error, results) => {
-            if (error) throw error
-            res.status(200).json({ status: 'success' })
-        }
-    )
+    if (checkVerified(req.body.level)) {
+        let query = 'DELETE FROM `order` WHERE id = ? AND user_id = ?'
+        connection.query(
+            query,
+            [req.body.orderId, req.body.userId],
+            (error, results) => {
+                if (error) throw error
+                res.status(200).json({ status: 'success' })
+            }
+        )
+    } else res.status(401).json({ status: 'fail' })
 }
 
 module.exports = {
     createOrder,
+    getAllOrders,
     getUserOrders,
     getItemOrders,
-    getDetailOrder,
-    getAskPrice,
-    getBidPrice,
+    getOrder,
     updateOrder,
     deleteOrder
 }
