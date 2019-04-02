@@ -7,7 +7,7 @@ Table
     -password: nvarchar
     -address: nvarchar
     -tel_no: nvarchar
-    -balance: float
+    -balance: double
     -bank_no: nvarchar
     -avatar_image: nvarchar
     -card_image: nvarchar
@@ -27,7 +27,7 @@ Table
     -user_id: int 
     -item_id: int 
     -size: nvarchar 
-    -price: float 
+    -price: double 
     -type: (Ask:0,Bid:1)
     -published_date: date
     -out_of_stock: (No:0,Yes:1) 
@@ -37,12 +37,19 @@ Table
     -user_id: int 
     -order_id: [int] 
     -amount: int
-    -total_price: float 
+    -total_price: double
     -paid_date: date
     -receive: (No:0, Yes:1)
     -stamp_date: date
 
 API
+•/items
+get_all_items		GET
+get_new_items		GET
+get_popular_items	GET
+get_item 		 	GET in-item_id
+search_items 		POST in-detail
+
 •/users
 sign_up 			POST in-full_name,card_no,email,password
 sign_in 			POST in-email,password
@@ -57,13 +64,6 @@ verify  			POST in-user_id (+email_noti)
 ban  				POST in-user_id (+email_noti)
 add_item 		 	POST in-`item` (permanent)
 -payment  			POST in-total_price*0.97,bank_no
-
-•/items
-get_all_items		GET
-get_new_items		GET
-get_popular_items	GET
-get_item 		 	GET in-item_id
-search_items 		POST in-detail
 
 •/orders
 -create_order 		POST in-`order` (verified=1)

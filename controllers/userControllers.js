@@ -82,14 +82,7 @@ const getProfile = (req, res) => {
         if (result.length !== 0)
             res.status(200).json({
                 status: 'success',
-                fullName: result[0].full_name,
-                cardNo: result[0].card_no,
-                email: result[0].email,
-                address: result[0].address,
-                telNo: result[0].tel_no,
-                balance: result[0].balance,
-                bankNo: result[0].bank_no,
-                avatarImage: result[0].avatar_image
+                result: result[0]
             })
         else res.status(403).json({ status: 'fail' })
     })

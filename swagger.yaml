@@ -12,6 +12,11 @@ tags:
 schemes:
     - http
     - https
+securityDefinitions:
+    Bearer:
+        type: apiKey
+        name: Authorization
+        in: header
 paths:
     /item/get_all_items:
         get:
@@ -27,9 +32,14 @@ paths:
                 200:
                     description: successful operation
                     schema:
-                        type: 'array'
-                        items:
-                            $ref: '#/definitions/Item'
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/item'
     /item/get_new_items:
         get:
             tags:
@@ -44,9 +54,14 @@ paths:
                 200:
                     description: successful operation
                     schema:
-                        type: 'array'
-                        items:
-                            $ref: '#/definitions/Item'
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/item'
     /item/get_popular_items:
         get:
             tags:
@@ -61,16 +76,21 @@ paths:
                 200:
                     description: successful operation
                     schema:
-                        type: 'array'
-                        items:
-                            $ref: '#/definitions/Item'
-    /item/get_detail_item/{id}:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/item'
+    /item/get_item/{id}:
         get:
             tags:
                 - item
             summary: Get detail of an item
             description: Returns a single item
-            operationId: getDetailItem
+            operationId: getItem
             produces:
                 - application/json
             parameters:
@@ -84,9 +104,14 @@ paths:
                 200:
                     description: successful operation
                     schema:
-                        type: 'array'
-                        items:
-                            $ref: '#/definitions/Item'
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/item'
     /item/search_items:
         post:
             tags:
@@ -102,15 +127,20 @@ paths:
                   description: Some details of items
                   type: object
                   properties:
-                      text:
+                      detail:
                           type: string
             responses:
                 200:
                     description: successful operation
                     schema:
-                        type: array
-                        items:
-                            $ref: '#/definitions/Item'
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/item'
     /user/sign_up:
         post:
             tags:
@@ -127,6 +157,8 @@ paths:
                   type: object
                   properties:
                       fullName:
+                          type: string
+                      cardNo:
                           type: string
                       email:
                           type: string
@@ -178,6 +210,8 @@ paths:
                                 type: string
                             userID:
                                 type: integer
+                            level:
+                                type: integer
                 401:
                     description: Authorization information is missing or invalid.
                     schema:
@@ -185,65 +219,107 @@ paths:
                         properties:
                             status:
                                 type: string
+    /user/get_profile:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - user
+            summary: Get Profile
+            description: Users want to get profile
+            operationId: getProfile
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: ID of user to return
+                  type: object
+                  properties:
+                      userId:
+                          type: integer
+            responses:
+                200:
+                    description: successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: object
+                                items:
+                                    $ref: '#/definitions/user'
+                403:
+                    description: Forbidden.
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
 definitions:
-    Item:
+    item:
         type: object
         properties:
-            ItemID:
+            id:
                 type: integer
                 format: int64
-            ItemImage:
-                type: string
-                description: Image path of an item
-            ItemBrand:
+            brand:
                 type: string
                 description: Brand of an item
-            ItemDesc:
+            desc:
                 type: string
                 description: Description of an item
-            ItemColor:
+            color:
                 type: string
                 description: Color of an item
-            ItemReleased:
+            released_date:
                 type: string
                 format: date-time
-            ItemClicked:
+            image:
+                type: string
+                description: Image path of an item
+            visited_count:
                 type: integer
                 format: int64
-    User:
+                description: Visited count of an item
+    user:
         type: object
         properties:
-            UserID:
+            id:
                 type: integer
                 format: int64
-            FullName:
+            full_name:
                 type: string
                 description: Full name of a user
-            IDCard:
+            card_no:
                 type: string
-                description: ID card of a user
-            Email:
+                description: ID card number of a user
+            email:
                 type: string
                 description: Email of a user
-            Password:
+            password:
                 type: string
                 description: Password of a user
-            Address:
+            address:
                 type: string
                 description: Address of a user
-            Tel:
+            tel_no:
                 type: string
-                description: Mobile number of a user
-            Balance:
+                description: Telephone number of a user
+            balance:
                 type: double
                 description: Balance of a user
-            BankNo:
+            bank_no:
                 type: string
                 description: Bank account number of a user
-            Verified:
+            avatar_image:
+                type: string
+                description: Avatar image path of an user
+            card_image:
+                type: string
+                description: Card image path of an user
+            level:
                 type: integer
                 format: int32
-                description: Verify status of a user
-            Salt:
-                type: string
-                description: Salt text of a user
+                description: Level of a user
