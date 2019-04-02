@@ -59,11 +59,11 @@ add_item 		 	POST in-`item` (permanent)
 -payment  			POST in-total_price*0.97,bank_no
 
 •/items
--get_all_items		GET
--get_new_items		GET
--get_popular_items	GET
--get_item 		 	GET in-item_id
--search_items 		POST in-detail
+get_all_items		GET
+get_new_items		GET
+get_popular_items	GET
+get_item 		 	GET in-item_id
+search_items 		POST in-detail
 
 •/orders
 -create_order 		POST in-`order` (verified=1)

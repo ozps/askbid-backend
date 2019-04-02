@@ -12,7 +12,7 @@ router.get('/get_new_items', itemControllers.getNewItems)
 router.get('/get_popular_items', itemControllers.getPopularItems)
 
 // Get detail item
-router.get('/get_detail_item/:id', itemControllers.getDetailItem)
+router.get('/get_item/:id', itemControllers.getItem)
 
 // Search items
 router.post('/search_items', itemControllers.searchItems)

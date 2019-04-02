@@ -1,75 +1,73 @@
 const connection = require('../models/dbConnection')
 
 const getAllItems = (req, res) => {
-    let query = 'SELECT * FROM Item'
+    let query = 'SELECT * FROM `item`'
     connection.query(query, (error, results) => {
         if (error) throw error
-        let resultsArray = JSON.parse(JSON.stringify(results))
-        resultsArray = resultsArray.sort((a, b) =>
-            a.ItemBrand + ' ' + a.ItemDesc > b.ItemBrand + ' ' + b.ItemDesc
-                ? 1
-                : -1
+        let result = JSON.parse(JSON.stringify(results))
+        result = result.sort((a, b) =>
+            a.brand + ' ' + a.desc > b.brand + ' ' + b.desc ? 1 : -1
         )
-        res.status(200).json(resultsArray)
+        res.status(200).json({ status: 'success', result: result })
     })
 }
 
 const getNewItems = (req, res) => {
-    let query = 'SELECT * FROM Item'
+    let query = 'SELECT * FROM `item`'
     connection.query(query, (error, results) => {
         if (error) throw error
-        let resultsArray = JSON.parse(JSON.stringify(results))
-        resultsArray = resultsArray.sort((a, b) =>
-            a.ItemReleased < b.ItemReleased ? 1 : -1
+        let result = JSON.parse(JSON.stringify(results))
+        result = result.sort((a, b) =>
+            a.released_date < b.released_date ? 1 : -1
         )
-        res.status(200).json(resultsArray)
+        res.status(200).json({ status: 'success', result: result })
     })
 }
 
 const getPopularItems = (req, res) => {
-    let query = 'SELECT * FROM Item'
+    let query = 'SELECT * FROM `item`'
     connection.query(query, (error, results) => {
         if (error) throw error
-        let resultsArray = JSON.parse(JSON.stringify(results))
-        resultsArray = resultsArray.sort((a, b) =>
-            a.ItemClicked < b.ItemClicked ? 1 : -1
+        let result = JSON.parse(JSON.stringify(results))
+        result = result.sort((a, b) =>
+            a.visited_count < b.visited_count ? 1 : -1
         )
-        res.status(200).json(resultsArray)
+        res.status(200).json({ status: 'success', result: result })
     })
 }
 
-const getDetailItem = (req, res) => {
+const getItem = (req, res) => {
     let query =
-        'SELECT * FROM Item WHERE ItemID = ?;UPDATE Item SET ItemClicked = ItemClicked + 1 WHERE ItemID = ?'
+        'UPDATE `item` SET visited_count = visited_count + 1 WHERE id = ?;SELECT * FROM `item` WHERE id = ?'
     connection.query(
         query,
         [req.params.id, req.params.id],
         (error, results) => {
             if (error) throw error
-            queryResults = JSON.parse(JSON.stringify(results))
-            res.status(200).json(queryResults[0])
+            result = JSON.parse(JSON.stringify(results))
+            res.status(200).json({ status: 'success', result: result[1] })
         }
     )
 }
 
 const searchItems = (req, res) => {
     let query =
-        'SELECT * FROM Item WHERE ItemBrand LIKE "%"?"%" OR ItemDesc LIKE "%"?"%" OR ItemColor LIKE "%"?"%"'
+        'SELECT * FROM `item` WHERE brand LIKE "%"?"%" OR `desc` LIKE "%"?"%" OR color LIKE "%"?"%"'
     connection.query(
         query,
-        [req.body.text, req.body.text, req.body.text],
+        [req.body.detail, req.body.detail, req.body.detail],
         (error, results) => {
             if (error) throw error
-            let resultsArray = JSON.parse(JSON.stringify(results))
-            res.status(200).json(resultsArray)
+            let result = JSON.parse(JSON.stringify(results))
+            res.status(200).json({ status: 'success', result: result })
         }
     )
 }
 
 module.exports = {
     getAllItems,
-    getDetailItem,
     getNewItems,
     getPopularItems,
+    getItem,
     searchItems
 }
