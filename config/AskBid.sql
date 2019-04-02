@@ -34,7 +34,7 @@ CREATE TABLE `item` (
   `visited_count` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -43,7 +43,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (1,'Nike','Jordan 1 Retro High','Neutral Grey Hyper Crimson','2019-01-24 00:00:00','sneaker_1.jpg',3),(2,'Nike','Jordan 1 Retro High Camo 3M','Wolf Grey','2017-08-01 00:00:00','sneaker_2.jpg',5);
+INSERT INTO `item` VALUES (1,'Nike','Jordan 1 Retro High','Neutral Grey Hyper Crimson','2019-01-24 00:00:00','sneaker_1.jpg',3),(2,'Nike','Jordan 1 Retro High Camo 3M','Wolf Grey','2017-08-01 00:00:00','sneaker_2.jpg',5),(3,'Adidas ','Yeezy Wave Runner 700','Solid Grey','2017-11-01 00:00:00','sneaker_3.jpg',0),(4,'Nike','Zoom Fly Off-White','Black Silver','2018-10-13 00:00:00','sneaker_4.jpg',0),(5,'Adidas','Yeezy Boost 350 V2','Static','2018-12-27 00:00:00','sneaker_5.jpg',0),(6,'Converse','Chuck Taylor All-Star 70s Hi Off-White','White','2018-10-08 00:00:00','sneaker_6.jpg',0),(7,'Vans','Old Skool NASA Space Voyager','True White','2018-11-02 00:00:00','sneaker_7.jpg',0),(8,'Adidas ','Yeezy Boost 500','Utility Black','2018-07-07 00:00:00','sneaker_8.jpg',0),(9,'Adidas ','Yeezy Boost 350','Pirate Black','2015-08-22 00:00:00','sneaker_9.jpg',0),(10,'Nike','Air Vapormax Off White','White','2018-04-14 00:00:00','sneaker_10.jpg',0);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -125,4 +125,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-02  9:00:56
+-- Dump completed on 2019-04-02  9:58:09
