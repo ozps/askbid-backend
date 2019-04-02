@@ -55,7 +55,7 @@ upload_card 		POST in-user_id,file,img_name
 get_all_cards 		POST
 verify  			POST in-user_id (+email_noti)
 ban  				POST in-user_id (+email_noti)
--add_item 		 	POST in-`item` (permanent)
+add_item 		 	POST in-`item` (permanent)
 -payment  			POST in-total_price*0.97,bank_no
 
 •/items

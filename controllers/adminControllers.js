@@ -44,7 +44,7 @@ const ban = (req, res) => {
 const addItem = (req, res) => {
     if (checkAdmin(req.body.level)) {
         let query =
-            'INSERT INTO `item` (brand, desc, color, released_date) VALUES (?, ?, ?, ?)'
+            'INSERT INTO `item` (brand, `desc`, color, released_date) VALUES (?, ?, ?, ?)'
         connection.query(
             query,
             [
@@ -54,7 +54,7 @@ const addItem = (req, res) => {
                 req.body.releasedDate
             ],
             (error, results) => {
-                if (error) throw error
+                if (error) throw console.log(error)
                 res.status(200).json({ status: 'success' })
             }
         )

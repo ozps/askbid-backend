@@ -4,14 +4,15 @@ const router = new Router()
 const fs = require('fs')
 const multer = require('multer')
 const path = require('path')
+const gm = require('gm')
 
 const storage = multer.diskStorage({
     destination: './public/images/',
     filename: (req, file, cb) => {
         cb(
             null,
-            'sneaker' +
-                String(req.body.itemID) +
+            'sneaker_' +
+                String(req.body.itemId) +
                 path.extname(file.originalname)
         )
     }
@@ -19,7 +20,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 1000000 },
+    limits: { fileSize: 1 * 1024 * 1024 },
     fileFilter: (req, file, cb) => {
         if (path.extname(file.originalname) !== '.jpg') {
             req.fileExtError = 'Allow only .jpg'
@@ -27,7 +28,7 @@ const upload = multer({
         }
         cb(null, true)
     }
-}).single('card')
+}).single('image')
 
 const base64_encode = file => {
     let bitmap = fs.readFileSync(file)
@@ -54,12 +55,25 @@ router.post('/ban', adminControllers.ban)
 // Add new item
 router.post('/add_item', adminControllers.addItem)
 
-// // Upload new item image
-// router.post('/upload_item_image', upload, (req, res) => {
-//     if (req.file) {
-//         return res.status(200).json({ status: 'success' })
-//     }
-//     return res.status(406).json({ status: 'fail' })
-// })
+// Upload new item image
+router.post('/upload_item_image', upload, (req, res) => {
+    if (req.file) {
+        let fileName =
+            'sneaker_' +
+            String(req.body.itemId) +
+            path.extname(req.file.originalname)
+        adminControllers.addImage(fileName, req.body.itemId)
+        gm('./public/images/' + fileName)
+            .resize(1100, 740, '!')
+            .write('./public/images/' + fileName, error => {
+                if (!error) {
+                    console.log('Image resized')
+                }
+            })
+
+        return res.status(200).json({ status: 'success' })
+    }
+    return res.status(406).json({ status: 'fail' })
+})
 
 module.exports = router
