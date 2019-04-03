@@ -1,19 +1,46 @@
 const connection = require('../models/dbConnection')
 
-const placeOrder = (req, res) => {} // สร้าง Match, Update Order & User(+Admin), ส่ง Bill ทางอีเมล์
+const checkBan = level => {
+    return level === -1 ? true : false
+}
 
-const getAllMatchs = (req, res) => {} // A list of all matches of user: UserID
+const placeOrder = (req, res) => {
+    if (!checkBan(req.body.level)) {
+    } else res.status(401).json({ status: 'fail' })
+}
 
-const getDetailMatch = (req, res) => {} // A match consists of item info: MatchID
+const getUserMatch = (req, res) => {
+    if (!checkBan(req.body.level)) {
+        let query = 'SELECT * FROM `match` WHERE user_id = ?'
+        connection.query(query, [req.body.userId], (error, results) => {
+            if (error) throw error
+            result = JSON.parse(JSON.stringify(results))
+            result = result.sort((a, b) => (a.paid_date < b.paid_date ? 1 : -1))
+            res.status(200).json(result)
+        })
+    } else res.status(401).json({ status: 'fail' })
+}
 
-const payment = (req, res) => {} // จ่ายทั้งหมด => Update Match & User: MatchID, ส่ง Bill ทางอีเมล์
+const getBill = (req, res) => {
+    if (!checkBan(req.body.level)) {
+        let query = 'SELECT * FROM `match` WHERE id = ? AND user_id = ?'
+        connection.query(
+            query,
+            [req.body.matchId, req.body.userId],
+            (error, results) => {
+                if (error) throw error
+                result = JSON.parse(JSON.stringify(results))
+                res.status(200).json(result)
+            }
+        )
+    } else res.status(401).json({ status: 'fail' })
+}
 
-const received = (req, res) => {} // ได้รับสินค้าแล้ว => Update Match & User(Admin หักเงิน 3%), หาวิธีตั้งเวลา: MatchID
+const updateShipping = (req, res) => {}
 
 module.exports = {
     placeOrder,
-    getAllMatchs,
-    getDetailMatch,
-    payment,
-    received
+    getUserMatch,
+    getBill,
+    updateShipping
 }

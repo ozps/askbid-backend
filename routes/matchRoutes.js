@@ -6,15 +6,12 @@ const router = new Router()
 router.post('/place_order', matchControllers.placeOrder)
 
 // Get all matches of a user
-router.post('/get_all_matchs', matchControllers.getAllMatchs)
+router.post('/get_user_match', matchControllers.getUserMatch)
 
 // Get history of a match
-router.post('/get_detail_match', matchControllers.getDetailMatch)
+router.post('/get_bill', matchControllers.getBill)
 
-// Payment
-router.post('/payment', matchControllers.payment)
-
-// Received
-router.post('/received', matchControllers.received)
+// Update shipping
+router.post('/update_shipping', matchControllers.updateShipping)
 
 module.exports = router

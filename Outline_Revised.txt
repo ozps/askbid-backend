@@ -39,7 +39,7 @@ Table
     -amount: int
     -total_price: double
     -paid_date: date
-    -receive: (No:0, Yes:1)
+    -shipping_status: (เตรียมส่ง:0,กำลังส่ง:1,ส่งถึง:2)
     -stamp_date: date
 
 API
@@ -81,7 +81,7 @@ get_bid_price       GET in-item_id
 -place_order 		POST in-`match` (+email_noti ถึงคนตั้ง,+pay ไปที่ admin, always check available)
 -get_user_match 	POST in-user_id
 -get_bill 			POST in-match_id
--update_stamp 		POST in-stamp_date,received (+email_noti ถึงคนตั้งได้รับเงิน)
+-update_shipping 	POST in-stamp_date,received (+email_noti ถึงคนตั้งได้รับเงิน)
 
 Note!
 -Add AskBid.sql at folder config
@@ -90,6 +90,7 @@ Note!
 -Edit Swagger
 -Merge Git Branch 
 -Deployment
+-MatchAPI
 
 
 
