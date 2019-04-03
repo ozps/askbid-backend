@@ -24,6 +24,8 @@ app.use(
             /\/order\/get_user_orders*/,
             /\/order\/get_item_orders*/,
             /\/order\/get_order*/,
+            /\/order\/get_ask_price*/,
+            /\/order\/get_bid_price*/,
             /\/api-docs*/
         ]
     })

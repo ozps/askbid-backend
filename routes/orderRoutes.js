@@ -20,7 +20,16 @@ router.get('/get_order/:id', orderControllers.getOrder)
 // Update bid or ask order
 router.post('/update_order', orderControllers.updateOrder)
 
+// Update order available
+router.post('/out_of_stock', orderControllers.outOfStock)
+
 // Delete bid or ask order
 router.post('/delete_order', orderControllers.deleteOrder)
+
+// Get ask price (itemId)
+router.get('/get_ask_price/:id', orderControllers.getAskPrice)
+
+// Get bid price (itemId)
+router.get('/get_bid_price/:id', orderControllers.getBidPrice)
 
 module.exports = router

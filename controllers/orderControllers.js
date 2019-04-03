@@ -16,10 +16,7 @@ const createOrder = (req, res) => {
                 req.body.size,
                 req.body.price,
                 req.body.type,
-                new Date()
-                    .toISOString()
-                    .replace(/T/, ' ')
-                    .replace(/\..+/, '')
+                new Date().toISOString().split('T')[0]
             ],
             (error, results) => {
                 if (error) throw error
@@ -34,7 +31,10 @@ const getAllOrders = (req, res) => {
     connection.query(query, (error, results) => {
         if (error) throw error
         result = JSON.parse(JSON.stringify(results))
-        res.status(200).json(result[0])
+        result = result.sort((a, b) =>
+            a.published_date < b.published_date ? 1 : -1
+        )
+        res.status(200).json(result)
     })
 }
 
@@ -43,7 +43,10 @@ const getUserOrders = (req, res) => {
     connection.query(query, [req.params.id], (error, results) => {
         if (error) throw error
         result = JSON.parse(JSON.stringify(results))
-        res.status(200).json(result[0])
+        result = result.sort((a, b) =>
+            a.published_date < b.published_date ? 1 : -1
+        )
+        res.status(200).json(result)
     })
 }
 
@@ -52,7 +55,10 @@ const getItemOrders = (req, res) => {
     connection.query(query, [req.params.id], (error, results) => {
         if (error) throw error
         result = JSON.parse(JSON.stringify(results))
-        res.status(200).json(result[0])
+        result = result.sort((a, b) =>
+            a.published_date < b.published_date ? 1 : -1
+        )
+        res.status(200).json(result)
     })
 }
 
@@ -61,27 +67,39 @@ const getOrder = (req, res) => {
     connection.query(query, [req.params.id], (error, results) => {
         if (error) throw error
         result = JSON.parse(JSON.stringify(results))
-        res.status(200).json(result[0])
+        res.status(200).json(result)
     })
 }
 
 const updateOrder = (req, res) => {
     if (checkVerified(req.body.level)) {
         let query =
-            'UPDATE `order` SET size = ?, price = ?, type = ?, published_date = ?  WHERE id = ? AND user_id = ?'
+            'UPDATE `order` SET size = ?, price = ?, type = ?, published_date = ? WHERE id = ? AND user_id = ?'
         connection.query(
             query,
             [
                 req.body.size,
                 req.body.price,
                 req.body.type,
-                new Date()
-                    .toISOString()
-                    .replace(/T/, ' ')
-                    .replace(/\..+/, ''),
+                new Date().toISOString().split('T')[0],
                 req.body.orderId,
                 req.body.userId
             ],
+            (error, results) => {
+                if (error) throw error
+                res.status(200).json({ status: 'success' })
+            }
+        )
+    } else res.status(401).json({ status: 'fail' })
+}
+
+const outOfStock = (req, res) => {
+    if (checkVerified(req.body.level)) {
+        let query =
+            'UPDATE `order` SET available = 0 WHERE id = ? AND user_id = ?'
+        connection.query(
+            query,
+            [req.body.orderId, req.body.userId],
             (error, results) => {
                 if (error) throw error
                 res.status(200).json({ status: 'success' })
@@ -104,6 +122,26 @@ const deleteOrder = (req, res) => {
     } else res.status(401).json({ status: 'fail' })
 }
 
+const getAskPrice = (req, res) => {
+    let query = 'SELECT * FROM `order` WHERE item_id = ? AND type = 0'
+    connection.query(query, [req.params.id], (error, results) => {
+        if (error) throw error
+        result = JSON.parse(JSON.stringify(results))
+        result = result.sort((a, b) => (a.price > b.price ? 1 : -1))
+        res.status(200).json({ status: 'success', result: result })
+    })
+}
+
+const getBidPrice = (req, res) => {
+    let query = 'SELECT * FROM `order` WHERE item_id = ? AND type = 1'
+    connection.query(query, [req.params.id], (error, results) => {
+        if (error) throw error
+        result = JSON.parse(JSON.stringify(results))
+        result = result.sort((a, b) => (a.price < b.price ? 1 : -1))
+        res.status(200).json({ status: 'success', result: result })
+    })
+}
+
 module.exports = {
     createOrder,
     getAllOrders,
@@ -111,5 +149,8 @@ module.exports = {
     getItemOrders,
     getOrder,
     updateOrder,
-    deleteOrder
+    outOfStock,
+    deleteOrder,
+    getAskPrice,
+    getBidPrice
 }
