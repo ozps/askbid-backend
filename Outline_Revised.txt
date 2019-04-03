@@ -85,7 +85,6 @@ get_bid_price       GET in-item_id
 
 Note!
 -Add AskBid.sql at folder config
--Set pages that can bypass JWT
 -Send & Receive Email
 -Timing Auto Payment
 -Edit Swagger

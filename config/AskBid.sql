@@ -43,7 +43,7 @@ CREATE TABLE `item` (
 
 LOCK TABLES `item` WRITE;
 /*!40000 ALTER TABLE `item` DISABLE KEYS */;
-INSERT INTO `item` VALUES (1,'Nike','Jordan 1 Retro High','Neutral Grey Hyper Crimson','2019-01-24 00:00:00','sneaker_1.jpg',3),(2,'Nike','Jordan 1 Retro High Camo 3M','Wolf Grey','2017-08-01 00:00:00','sneaker_2.jpg',5),(3,'Adidas ','Yeezy Wave Runner 700','Solid Grey','2017-11-01 00:00:00','sneaker_3.jpg',0),(4,'Nike','Zoom Fly Off-White','Black Silver','2018-10-13 00:00:00','sneaker_4.jpg',0),(5,'Adidas','Yeezy Boost 350 V2','Static','2018-12-27 00:00:00','sneaker_5.jpg',0),(6,'Converse','Chuck Taylor All-Star 70s Hi Off-White','White','2018-10-08 00:00:00','sneaker_6.jpg',0),(7,'Vans','Old Skool NASA Space Voyager','True White','2018-11-02 00:00:00','sneaker_7.jpg',0),(8,'Adidas ','Yeezy Boost 500','Utility Black','2018-07-07 00:00:00','sneaker_8.jpg',0),(9,'Adidas ','Yeezy Boost 350','Pirate Black','2015-08-22 00:00:00','sneaker_9.jpg',0),(10,'Nike','Air Vapormax Off White','White','2018-04-14 00:00:00','sneaker_10.jpg',0);
+INSERT INTO `item` VALUES (1,'Nike','Jordan 1 Retro High','Neutral Grey Hyper Crimson','2019-01-24 00:00:00','sneaker_1.jpg',3),(2,'Nike','Jordan 1 Retro High Camo 3M','Wolf Grey','2017-08-01 00:00:00','sneaker_2.jpg',6),(3,'Adidas ','Yeezy Wave Runner 700','Solid Grey','2017-11-01 00:00:00','sneaker_3.jpg',0),(4,'Nike','Zoom Fly Off-White','Black Silver','2018-10-13 00:00:00','sneaker_4.jpg',0),(5,'Adidas','Yeezy Boost 350 V2','Static','2018-12-27 00:00:00','sneaker_5.jpg',0),(6,'Converse','Chuck Taylor All-Star 70s Hi Off-White','White','2018-10-08 00:00:00','sneaker_6.jpg',0),(7,'Vans','Old Skool NASA Space Voyager','True White','2018-11-02 00:00:00','sneaker_7.jpg',0),(8,'Adidas ','Yeezy Boost 500','Utility Black','2018-07-07 00:00:00','sneaker_8.jpg',0),(9,'Adidas ','Yeezy Boost 350','Pirate Black','2015-08-22 00:00:00','sneaker_9.jpg',0),(10,'Nike','Air Vapormax Off White','White','2018-04-14 00:00:00','sneaker_10.jpg',0);
 /*!40000 ALTER TABLE `item` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -59,17 +59,17 @@ CREATE TABLE `order` (
   `user_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
   `size` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
-  `price` float NOT NULL,
+  `price` double NOT NULL,
   `type` tinyint(4) NOT NULL,
   `published_date` datetime NOT NULL,
-  `out_of_stock` tinyint(4) NOT NULL,
+  `available` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   KEY `user_id_idx` (`user_id`),
   KEY `fk_item_id_idx` (`item_id`),
   CONSTRAINT `fk_item_id` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`),
   CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,6 +78,7 @@ CREATE TABLE `order` (
 
 LOCK TABLES `order` WRITE;
 /*!40000 ALTER TABLE `order` DISABLE KEYS */;
+INSERT INTO `order` VALUES (1,2,3,'US10.5',7500.5,0,'2019-04-02 00:00:00',1),(2,2,3,'US12',8000,1,'2019-04-02 00:00:00',1),(3,2,3,'US9',8000,1,'2019-04-02 00:00:00',1),(5,2,3,'US9',7600,1,'2019-04-03 00:00:00',0),(6,2,3,'US4',7100,0,'2019-04-03 00:00:00',1),(7,2,6,'US4',7855.5,0,'2019-04-03 00:00:00',1),(8,5,7,'US4',7800,0,'2019-04-03 00:00:00',1);
 /*!40000 ALTER TABLE `order` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -96,14 +97,14 @@ CREATE TABLE `user` (
   `password` varchar(300) COLLATE utf8mb4_general_ci NOT NULL,
   `address` varchar(300) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `tel_no` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `balance` float DEFAULT NULL,
+  `balance` double DEFAULT NULL,
   `bank_no` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `avatar_image` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `card_image` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `level` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -112,7 +113,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Admin AskBid','1234567890123','askbid.se@gmail.com','$2b$10$l8UyWSSOAAGSnm.aXHlKt.mgO6eScEajY9YADvfda.0Ss9zrDcFw2','CU TH','0812345678',123457000,'1234567890','avatar_1_41ro5s.jpg','card_1_sjkct7.jpg',2),(2,'Demo Ask','0000000000000','ask.se@gmail.com','$2b$10$kcgQaAnGDGH6StnCxKpO5OJV6UoiD6SgF.xlRAy9DW.jZUFHsg7t6',NULL,NULL,NULL,NULL,NULL,NULL,1),(3,'Demo Bid','1111111111111','bid.se@gmail.com','$2b$10$XxHM0I5.hnvSslxPeiLY/OKOTgnBtSwfw/lYTs0ZDDYbrf.VxYF52',NULL,NULL,NULL,NULL,NULL,NULL,1),(4,'Demo User01','0101010101010','user01.se@gmail.com','$2b$10$iD0moeHbPmxSNpC/AGVs2ew1LNR.XabAsRgQHvYR2GDVreUlIvKNi',NULL,NULL,NULL,NULL,NULL,NULL,-1),(5,'Demo User02','0202020202020','user02.se@gmail.com','$2b$10$9ppAO.PuZDxIM/2PxkfuzOpg7MLujPUA97DslAQe6OMIOiZNNvMme',NULL,NULL,NULL,NULL,NULL,NULL,0);
+INSERT INTO `user` VALUES (1,'Admin AskBid','1234567890123','askbid.se@gmail.com','$2b$10$l8UyWSSOAAGSnm.aXHlKt.mgO6eScEajY9YADvfda.0Ss9zrDcFw2','Bangkok, Thailand','0812345678',9999999.5,'1234567890','avatar_1_41ro5s.jpg','card_1_sjkct7.jpg',2),(2,'Demo Ask','0000000000000','ask.se@gmail.com','$2b$10$kcgQaAnGDGH6StnCxKpO5OJV6UoiD6SgF.xlRAy9DW.jZUFHsg7t6',NULL,NULL,NULL,NULL,NULL,NULL,1),(3,'Demo Bid','1111111111111','bid.se@gmail.com','$2b$10$XxHM0I5.hnvSslxPeiLY/OKOTgnBtSwfw/lYTs0ZDDYbrf.VxYF52',NULL,NULL,NULL,NULL,NULL,NULL,1),(4,'Demo User01','0101010101010','user01.se@gmail.com','$2b$10$iD0moeHbPmxSNpC/AGVs2ew1LNR.XabAsRgQHvYR2GDVreUlIvKNi',NULL,NULL,NULL,NULL,NULL,NULL,-1),(5,'Demo User02','0202020202020','user02.se@gmail.com','$2b$10$9ppAO.PuZDxIM/2PxkfuzOpg7MLujPUA97DslAQe6OMIOiZNNvMme',NULL,NULL,NULL,NULL,NULL,NULL,0),(6,'Demo Swagger','0987654321098','swagger.se@gmail.com','$2b$10$sIzRgf9DEwqCxnMX7iI9mu8Q6Pkhw3wJVSBLAyHwQIoTJIzed2XkO',NULL,NULL,NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -125,4 +126,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-04-02  9:58:09
+-- Dump completed on 2019-04-03 13:37:19
