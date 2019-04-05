@@ -293,6 +293,80 @@ paths:
                         properties:
                             status:
                                 type: string
+    /user/upload_avatar:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - user
+            summary: Upload Avatar
+            description: Users want to upload avatar
+            operationId: uploadAvatar
+            produces:
+                - application/json
+            consumes:
+                - multipart/form-data
+            parameters:
+                - in: formData
+                  name: avatar
+                  type: file
+                  description: The avatar to upload.
+                - in: formData
+                  name: userId
+                  type: integer
+                  format: int64
+            responses:
+                200:
+                    description: successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                406:
+                    description: Not Acceptable.
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+    /user/upload_card:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - user
+            summary: Upload Card
+            description: Users want to upload card
+            operationId: uploadCard
+            produces:
+                - application/json
+            consumes:
+                - multipart/form-data
+            parameters:
+                - in: formData
+                  name: card
+                  type: file
+                  description: The card to upload.
+                - in: formData
+                  name: userId
+                  type: integer
+                  format: int64
+            responses:
+                200:
+                    description: successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                406:
+                    description: Not Acceptable.
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
 
 definitions:
     item:

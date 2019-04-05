@@ -55,8 +55,8 @@ sign_up 			POST in-full_name,card_no,email,password
 sign_in 			POST in-email,password
 get_profile  		POST in-user_id
 update_profile  	POST in-`user`
-$upload_avatar      POST in-user_id,file,img_name
-$upload_card 		POST in-user_id,file,img_name
+upload_avatar       POST in-user_id,file,img_name       # Problem only on Swagger
+upload_card 		POST in-user_id,file,img_name       # Problem only on Swagger
 
 •/admin (level=2)
 get_all_cards 		POST
@@ -65,7 +65,7 @@ ban  				POST in-user_id (+email_noti)
 add_item 		 	POST in-`item` (permanent)
 -payment  			POST in-total_price*0.97,bank_no
 
-•/order (level=1)
+•/order (level>0)
 create_order 		POST in-`order` 
 get_all_orders      GET SORT published_date             
 get_user_orders 	GET in-user_id SORT published_date  
@@ -77,7 +77,7 @@ delete_order	    POST in-order_id,user_id
 get_ask_price       GET in-item_id
 get_bid_price       GET in-item_id
 
-•/match (level>0)
+•/match (level!=-1)
 -place_order 		POST in-`match` (+email_noti ถึงคนตั้ง,+pay ไปที่ admin, always check available)
 -get_user_match 	POST in-user_id
 -get_bill 			POST in-match_id
