@@ -40,10 +40,15 @@ router.post('/get_all_cards', adminControllers.getAllCards)
 
 // Get user card image
 router.post('/get_card_image', (req, res) => {
-    let pathImg = __dirname + '/../public/cards/' + req.body.card_image
-    if (fs.existsSync(pathImg)) {
-        res.status(200).json({ image64: base64_encode(pathImg) })
-    } else res.status(404).json({ status: 'fail' })
+    if (adminControllers.checkAdmin(req.body.level)) {
+        let pathImg = __dirname + '/../public/cards/' + req.body.cardImage
+        if (fs.existsSync(pathImg)) {
+            res.status(200).json({
+                status: 'success',
+                image64: base64_encode(pathImg)
+            })
+        } else res.status(404).json({ status: 'fail' })
+    } else res.status(401).json({ status: 'fail' })
 })
 
 // Verify

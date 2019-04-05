@@ -6,9 +6,11 @@ info:
 host: localhost:5000
 tags:
     - name: item
-      description: Everything about Item
+      description: Everything about item
     - name: user
-      description: Operations about User
+      description: Operations about user
+    - name: admin
+      description: Operations about admin
 schemes:
     - http
     - https
@@ -30,7 +32,7 @@ paths:
             parameters: []
             responses:
                 200:
-                    description: successful operation
+                    description: Successful operation
                     schema:
                         type: object
                         properties:
@@ -52,7 +54,7 @@ paths:
             parameters: []
             responses:
                 200:
-                    description: successful operation
+                    description: Successful operation
                     schema:
                         type: object
                         properties:
@@ -74,7 +76,7 @@ paths:
             parameters: []
             responses:
                 200:
-                    description: successful operation
+                    description: Successful operation
                     schema:
                         type: object
                         properties:
@@ -96,13 +98,13 @@ paths:
             parameters:
                 - name: id
                   in: path
-                  description: ID of item to return
+                  description: Id of item to return
                   required: true
                   type: integer
                   format: int64
             responses:
                 200:
-                    description: successful operation
+                    description: Successful operation
                     schema:
                         type: object
                         properties:
@@ -131,7 +133,7 @@ paths:
                           type: string
             responses:
                 200:
-                    description: successful operation
+                    description: Successful operation
                     schema:
                         type: object
                         properties:
@@ -145,7 +147,7 @@ paths:
         post:
             tags:
                 - user
-            summary: Sign Up
+            summary: Sign up
             description: Users want to sign up
             operationId: signUp
             produces:
@@ -166,14 +168,14 @@ paths:
                           type: string
             responses:
                 200:
-                    description: successful operation
+                    description: Successful operation
                     schema:
                         type: object
                         properties:
                             status:
                                 type: string
                 409:
-                    description: The request could not be completed due to a conflict with the current state.
+                    description: The request could not be completed due to a conflict with the current state
                     schema:
                         type: object
                         properties:
@@ -183,7 +185,7 @@ paths:
         post:
             tags:
                 - user
-            summary: Sign In
+            summary: Sign in
             description: Users want to sign in
             operationId: signIn
             produces:
@@ -200,7 +202,7 @@ paths:
                           type: string
             responses:
                 200:
-                    description: successful operation
+                    description: Successful operation
                     schema:
                         type: object
                         properties:
@@ -208,12 +210,12 @@ paths:
                                 type: string
                             token:
                                 type: string
-                            userID:
+                            userId:
                                 type: integer
                             level:
                                 type: integer
                 401:
-                    description: Authorization information is missing or invalid.
+                    description: Authorization information is missing or invalid
                     schema:
                         type: object
                         properties:
@@ -225,7 +227,7 @@ paths:
                 - Bearer: []
             tags:
                 - user
-            summary: Get Profile
+            summary: Get profile
             description: Users want to get profile
             operationId: getProfile
             produces:
@@ -233,14 +235,14 @@ paths:
             parameters:
                 - name: state
                   in: body
-                  description: ID of user to return
+                  description: Id of user to return
                   type: object
                   properties:
                       userId:
                           type: integer
             responses:
                 200:
-                    description: successful operation
+                    description: Successful operation
                     schema:
                         type: object
                         properties:
@@ -249,7 +251,7 @@ paths:
                             result: { $ref: '#/definitions/user' }
 
                 403:
-                    description: Forbidden.
+                    description: Forbidden
                     schema:
                         type: object
                         properties:
@@ -261,7 +263,7 @@ paths:
                 - Bearer: []
             tags:
                 - user
-            summary: Update Profile
+            summary: Update profile
             description: Users want to update profile
             operationId: updateProfile
             produces:
@@ -287,7 +289,7 @@ paths:
                           format: int64
             responses:
                 200:
-                    description: successful operation
+                    description: Successful operation
                     schema:
                         type: object
                         properties:
@@ -299,7 +301,7 @@ paths:
                 - Bearer: []
             tags:
                 - user
-            summary: Upload Avatar
+            summary: Upload avatar
             description: Users want to upload avatar
             operationId: uploadAvatar
             produces:
@@ -310,21 +312,21 @@ paths:
                 - in: formData
                   name: avatar
                   type: file
-                  description: The avatar to upload.
+                  description: The avatar to upload
                 - in: formData
                   name: userId
                   type: integer
                   format: int64
             responses:
                 200:
-                    description: successful operation
+                    description: Successful operation
                     schema:
                         type: object
                         properties:
                             status:
                                 type: string
                 406:
-                    description: Not Acceptable.
+                    description: Not acceptable
                     schema:
                         type: object
                         properties:
@@ -336,7 +338,7 @@ paths:
                 - Bearer: []
             tags:
                 - user
-            summary: Upload Card
+            summary: Upload card
             description: Users want to upload card
             operationId: uploadCard
             produces:
@@ -347,27 +349,183 @@ paths:
                 - in: formData
                   name: card
                   type: file
-                  description: The card to upload.
+                  description: The card to upload
                 - in: formData
                   name: userId
                   type: integer
                   format: int64
             responses:
                 200:
-                    description: successful operation
+                    description: Successful operation
                     schema:
                         type: object
                         properties:
                             status:
                                 type: string
                 406:
-                    description: Not Acceptable.
+                    description: Not acceptable
                     schema:
                         type: object
                         properties:
                             status:
                                 type: string
+    /admin/get_all_cards:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - admin
+            summary: Get all cards
+            description: Admin want to get all cards
+            operationId: getAllCards
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: level of admin
+                  type: object
+                  properties:
+                      level:
+                          type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/user'
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+    /admin/get_card_image:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - admin
+            summary: Get card image in base64
+            description: Admin want to get card image in base64
+            operationId: Nothing
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: admin level and card image
+                  type: object
+                  properties:
+                      cardImage:
+                          type: string
+                      level:
+                          type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            image64:
+                                type: string
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                    type: object
+                    properties:
+                        status:
+                            type: string
+                404:
+                    description: Not found
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+    /admin/verify:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - admin
+            summary: Verify
+            description: Admin want to verify a user
+            operationId: verify
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: Level of admin and target user
+                  type: object
+                  properties:
+                      level:
+                          type: integer
+                      userId:
+                          type: integer
 
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+    /admin/ban:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - admin
+            summary: Ban
+            description: Admin want to ban a user
+            operationId: ban
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: Level of admin and target user
+                  type: object
+                  properties:
+                      level:
+                          type: integer
+                      userId:
+                          type: integer
+
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
 definitions:
     item:
         type: object
@@ -406,7 +564,7 @@ definitions:
                 description: Full name of a user
             card_no:
                 type: string
-                description: ID card number of a user
+                description: Id card number of a user
             email:
                 type: string
                 description: Email of a user

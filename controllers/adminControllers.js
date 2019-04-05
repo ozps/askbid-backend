@@ -12,10 +12,7 @@ const getAllCards = (req, res) => {
             result = JSON.parse(JSON.stringify(results))
             res.status(200).json({
                 status: 'success',
-                fullName: result[0].full_name,
-                email: result[0].email,
-                telNo: result[0].tel_no,
-                cardImage: result[0].card_image
+                result: result
             })
         })
     } else res.status(401).json({ status: 'fail' })
@@ -69,6 +66,7 @@ const addImage = (name, id) => {
 }
 
 module.exports = {
+    checkAdmin,
     getAllCards,
     verify,
     ban,
