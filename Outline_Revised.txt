@@ -68,12 +68,11 @@ upload_item_image   POST in-item_id,file    # Problem only on Swagger
 -payment  			POST in-total_price*0.97,bank_no
 
 •/order (level>0)
-# Unfinish Swagger
 create_order 		POST in-`order` 
 get_all_orders      GET SORT published_date             
 get_user_orders 	GET in-user_id SORT published_date  
 get_item_orders 	GET in-order_id SORT published_date   
-get_order           GET in-order_id                     
+get_order           GET in-order_id                    
 update_order 		POST in-`order`,user_id
 out_of_stock        Post in-`order`,user_id
 delete_order	    POST in-order_id,user_id
@@ -81,19 +80,19 @@ get_ask_price       GET in-item_id
 get_bid_price       GET in-item_id
 
 •/match (level!=-1)
+# Unfinished Swagger 
 -place_order 		POST in-`match` (+email_noti ถึงคนตั้ง,+pay ไปที่ admin, always check available)
-get_user_match 	POST in-user_id
+get_user_match 	    POST in-user_id
 get_bill 			POST in-match_id
 -update_shipping 	POST in-stamp_date,received (+email_noti ถึงคนตั้งได้รับเงิน)
 
 Note!
--Add AskBid.sql at folder config
--Send & Receive Email
+-MatchAPI+Payment
+-Update AskBid.sql at folder config
+-Update Swagger
 -Timing Auto Payment
--Edit Swagger
 -Merge Git Branch 
 -Deployment
--MatchAPI
 
 
 

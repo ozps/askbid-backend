@@ -11,6 +11,8 @@ tags:
       description: Operations about user
     - name: admin
       description: Operations about admin
+    - name: order
+      description: Everything about order
 schemes:
     - http
     - https
@@ -611,6 +613,327 @@ paths:
                         properties:
                             status:
                                 type: string
+    /order/create_order:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - order
+            summary: Create order
+            description: Users want to create order
+            operationId: createOrder
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: Information of an order
+                  type: object
+                  properties:
+                      userId:
+                          type: integer
+                      itemId:
+                          type: integer
+                      size:
+                          type: string
+                      price:
+                          type: number
+                      flag:
+                          type: integer
+                      level:
+                          type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+    /order/get_all_orders:
+        get:
+            tags:
+                - order
+            summary: Get all orders
+            description: Returns orders sorted by published date
+            operationId: getAllOrders
+            produces:
+                - application/json
+            parameters: []
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/item'
+    /order/get_user_orders/{id}:
+        get:
+            tags:
+                - order
+            summary: Get user orders
+            description: Returns user orders sorted by published date
+            operationId: getUserOrders
+            produces:
+                - application/json
+            parameters:
+                - name: id
+                  in: path
+                  description: Id of user to return
+                  required: true
+                  type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/order'
+    /order/get_item_orders/{id}:
+        get:
+            tags:
+                - order
+            summary: Get item orders
+            description: Returns item orders sorted by published date
+            operationId: getItemOrders
+            produces:
+                - application/json
+            parameters:
+                - name: id
+                  in: path
+                  description: Id of item to return
+                  required: true
+                  type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/order'
+    /order/get_order/{id}:
+        get:
+            tags:
+                - order
+            summary: Get order
+            description: Returns an order
+            operationId: getOrder
+            produces:
+                - application/json
+            parameters:
+                - name: id
+                  in: path
+                  description: Id of order to return
+                  required: true
+                  type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/order'
+    /order/update_order:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - order
+            summary: Update order
+            description: Users want to update order
+            operationId: updateOrder
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: Information of an order
+                  type: object
+                  properties:
+                      size:
+                          type: string
+                      price:
+                          type: number
+                      flag:
+                          type: integer
+                      orderId:
+                          type: integer
+                      userId:
+                          type: integer
+                      level:
+                          type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+    /order/out_of_stock:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - order
+            summary: Update available
+            description: Users want to update available to 0
+            operationId: outOfStock
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: Information of an order
+                  type: object
+                  properties:
+                      orderId:
+                          type: integer
+                      userId:
+                          type: integer
+                      level:
+                          type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+    /order/delete_order:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - order
+            summary: Delete order
+            description: Users want to delete order
+            operationId: deleteOrder
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: Target order
+                  type: object
+                  properties:
+                      orderId:
+                          type: integer
+                      userId:
+                          type: integer
+                      level:
+                          type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+    /order/get_ask_price/{id}:
+        get:
+            tags:
+                - order
+            summary: Get ask price of an item
+            description: Returns order sorted by price and choose only flag 0
+            operationId: getAskPrice
+            produces:
+                - application/json
+            parameters:
+                - name: id
+                  in: path
+                  description: Id of item to return
+                  required: true
+                  type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/order'
+    /order/get_bid_price/{id}:
+        get:
+            tags:
+                - order
+            summary: Get bid price of an item
+            description: Returns order sorted by price and choose only flag 1
+            operationId: getBidPrice
+            produces:
+                - application/json
+            parameters:
+                - name: id
+                  in: path
+                  description: Id of item to return
+                  required: true
+                  type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/order'
 definitions:
     item:
         type: object
@@ -673,4 +996,31 @@ definitions:
                 description: Card image path of an user
             level:
                 type: integer
-                description: Level of a user
+                description: Level of a user (-1-Banned, 0-Normal, 1-Verified, 2-Admin)
+    order:
+        type: object
+        properties:
+            id:
+                type: integer
+            user_id:
+                type: integer
+                description: User id of item owner
+            item_id:
+                type: integer
+                description: Item id of an item
+            size:
+                type: string
+                description: Size of an item
+            price:
+                type: number
+                description: Price per piece
+            flag:
+                type: integer
+                description: Type of an item (0-Ask, 1-Bid)
+            published_date:
+                type: string
+                format: date-time
+                description: Published date of an item
+            available:
+                type: integer
+                description: Stock of an item (0-Out, 1-In)

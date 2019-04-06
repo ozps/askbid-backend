@@ -7,7 +7,7 @@ const checkVerified = level => {
 const createOrder = (req, res) => {
     if (checkVerified(req.body.level)) {
         let query =
-            'INSERT INTO `order` (user_id, item_id, size, price, type, published_date) VALUES (?, ?, ?, ?, ?, ?)'
+            'INSERT INTO `order` (user_id, item_id, size, price, flag, published_date) VALUES (?, ?, ?, ?, ?, ?)'
         connection.query(
             query,
             [
@@ -15,7 +15,7 @@ const createOrder = (req, res) => {
                 req.body.itemId,
                 req.body.size,
                 req.body.price,
-                req.body.type,
+                req.body.flag,
                 new Date().toISOString().split('T')[0]
             ],
             (error, results) => {
@@ -34,7 +34,7 @@ const getAllOrders = (req, res) => {
         result = result.sort((a, b) =>
             a.published_date < b.published_date ? 1 : -1
         )
-        res.status(200).json(result)
+        res.status(200).json({ status: 'success', result: result })
     })
 }
 
@@ -46,7 +46,7 @@ const getUserOrders = (req, res) => {
         result = result.sort((a, b) =>
             a.published_date < b.published_date ? 1 : -1
         )
-        res.status(200).json(result)
+        res.status(200).json({ status: 'success', result: result })
     })
 }
 
@@ -58,7 +58,7 @@ const getItemOrders = (req, res) => {
         result = result.sort((a, b) =>
             a.published_date < b.published_date ? 1 : -1
         )
-        res.status(200).json(result)
+        res.status(200).json({ status: 'success', result: result })
     })
 }
 
@@ -67,20 +67,20 @@ const getOrder = (req, res) => {
     connection.query(query, [req.params.id], (error, results) => {
         if (error) throw error
         result = JSON.parse(JSON.stringify(results))
-        res.status(200).json(result)
+        res.status(200).json({ status: 'success', result: result })
     })
 }
 
 const updateOrder = (req, res) => {
     if (checkVerified(req.body.level)) {
         let query =
-            'UPDATE `order` SET size = ?, price = ?, type = ?, published_date = ? WHERE id = ? AND user_id = ?'
+            'UPDATE `order` SET size = ?, price = ?, flag = ?, published_date = ? WHERE id = ? AND user_id = ?'
         connection.query(
             query,
             [
                 req.body.size,
                 req.body.price,
-                req.body.type,
+                req.body.flag,
                 new Date().toISOString().split('T')[0],
                 req.body.orderId,
                 req.body.userId
@@ -123,7 +123,7 @@ const deleteOrder = (req, res) => {
 }
 
 const getAskPrice = (req, res) => {
-    let query = 'SELECT * FROM `order` WHERE item_id = ? AND type = 0'
+    let query = 'SELECT * FROM `order` WHERE item_id = ? AND flag = 0'
     connection.query(query, [req.params.id], (error, results) => {
         if (error) throw error
         result = JSON.parse(JSON.stringify(results))
@@ -133,7 +133,7 @@ const getAskPrice = (req, res) => {
 }
 
 const getBidPrice = (req, res) => {
-    let query = 'SELECT * FROM `order` WHERE item_id = ? AND type = 1'
+    let query = 'SELECT * FROM `order` WHERE item_id = ? AND flag = 1'
     connection.query(query, [req.params.id], (error, results) => {
         if (error) throw error
         result = JSON.parse(JSON.stringify(results))
