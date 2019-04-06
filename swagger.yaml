@@ -101,7 +101,6 @@ paths:
                   description: Id of item to return
                   required: true
                   type: integer
-                  format: int64
             responses:
                 200:
                     description: Successful operation
@@ -286,7 +285,6 @@ paths:
                           type: string
                       userId:
                           type: integer
-                          format: int64
             responses:
                 200:
                     description: Successful operation
@@ -301,7 +299,7 @@ paths:
                 - Bearer: []
             tags:
                 - user
-            summary: Upload avatar
+            summary: Upload avatar (has problem with formData to body in Swagger)
             description: Users want to upload avatar
             operationId: uploadAvatar
             produces:
@@ -316,7 +314,6 @@ paths:
                 - in: formData
                   name: userId
                   type: integer
-                  format: int64
             responses:
                 200:
                     description: Successful operation
@@ -338,7 +335,7 @@ paths:
                 - Bearer: []
             tags:
                 - user
-            summary: Upload card
+            summary: Upload card (has problem with formData to body in Swagger)
             description: Users want to upload card
             operationId: uploadCard
             produces:
@@ -353,7 +350,6 @@ paths:
                 - in: formData
                   name: userId
                   type: integer
-                  format: int64
             responses:
                 200:
                     description: Successful operation
@@ -376,7 +372,7 @@ paths:
             tags:
                 - admin
             summary: Get all cards
-            description: Admin want to get all cards
+            description: Admin wants to get all cards
             operationId: getAllCards
             produces:
                 - application/json
@@ -414,7 +410,7 @@ paths:
             tags:
                 - admin
             summary: Get card image in base64
-            description: Admin want to get card image in base64
+            description: Admin wants to get card image in base64
             operationId: Nothing
             produces:
                 - application/json
@@ -459,7 +455,7 @@ paths:
             tags:
                 - admin
             summary: Verify
-            description: Admin want to verify a user
+            description: Admin wants to verify a user
             operationId: verify
             produces:
                 - application/json
@@ -496,7 +492,7 @@ paths:
             tags:
                 - admin
             summary: Ban
-            description: Admin want to ban a user
+            description: Admin wants to ban a user
             operationId: ban
             produces:
                 - application/json
@@ -526,13 +522,101 @@ paths:
                         properties:
                             status:
                                 type: string
+    /admin/add_item:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - admin
+            summary: Add item
+            description: Admin wants to add item
+            operationId: addItem
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: Information of an item
+                  type: object
+                  properties:
+                      brand:
+                          type: string
+                      desc:
+                          type: string
+                      color:
+                          type: string
+                      releasedDate:
+                          type: string
+                          format: date-time
+                      level:
+                          type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+    /admin/upload_item_image:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - admin
+            summary: Upload item image (has problem with formData to body in Swagger)
+            description: Admin wants to upload an item image
+            operationId: upload
+            produces:
+                - application/json
+            consumes:
+                - multipart/form-data
+            parameters:
+                - in: formData
+                  name: image
+                  type: file
+                  description: The image to upload
+                - in: formData
+                  name: itemId
+                  type: integer
+                - in: formData
+                  name: level
+                  type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                406:
+                    description: Not acceptable
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
 definitions:
     item:
         type: object
         properties:
             id:
                 type: integer
-                format: int64
             brand:
                 type: string
                 description: Brand of an item
@@ -551,14 +635,12 @@ definitions:
                 description: Image path of an item
             visited_count:
                 type: integer
-                format: int64
                 description: Visited count of an item
     user:
         type: object
         properties:
             id:
                 type: integer
-                format: int64
             full_name:
                 type: string
                 description: Full name of a user
@@ -591,5 +673,4 @@ definitions:
                 description: Card image path of an user
             level:
                 type: integer
-                format: int32
                 description: Level of a user

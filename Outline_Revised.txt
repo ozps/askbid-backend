@@ -63,13 +63,12 @@ get_all_cards 		POST
 get_card_image      POST in-card_image
 verify  			POST in-user_id (+email_noti)
 ban  				POST in-user_id (+email_noti) (permanent)
-
-# Unfinish Swagger
 add_item 		 	POST in-`item`
 upload_item_image   POST in-item_id,file    # Problem only on Swagger
 -payment  			POST in-total_price*0.97,bank_no
 
 •/order (level>0)
+# Unfinish Swagger
 create_order 		POST in-`order` 
 get_all_orders      GET SORT published_date             
 get_user_orders 	GET in-user_id SORT published_date  
