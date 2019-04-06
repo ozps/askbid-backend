@@ -51,7 +51,7 @@ get_item 		 	GET in-item_id
 search_items 		POST in-detail
 
 •/user
-sign_up 			POST in-full_name,card_no,email,password
+sign_up 			POST in-full_name,card_no,email,password (+email_noti)
 sign_in 			POST in-email,password
 get_profile  		POST in-user_id
 update_profile  	POST in-`user`
@@ -82,8 +82,8 @@ get_bid_price       GET in-item_id
 
 •/match (level!=-1)
 -place_order 		POST in-`match` (+email_noti ถึงคนตั้ง,+pay ไปที่ admin, always check available)
--get_user_match 	POST in-user_id
--get_bill 			POST in-match_id
+get_user_match 	POST in-user_id
+get_bill 			POST in-match_id
 -update_shipping 	POST in-stamp_date,received (+email_noti ถึงคนตั้งได้รับเงิน)
 
 Note!

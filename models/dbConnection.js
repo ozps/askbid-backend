@@ -10,8 +10,8 @@ const connection = mysql.createConnection({
     multipleStatements: true
 })
 
-connection.connect(function(err) {
-    if (err) throw err
+connection.connect(error => {
+    if (error) throw error
     console.log('Connected!')
 })
 

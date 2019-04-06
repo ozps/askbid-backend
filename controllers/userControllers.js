@@ -1,5 +1,6 @@
 const connection = require('../models/dbConnection')
 const keys = require('../config/keys')
+const mailConfig = require('../config/mailConfig')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const validator = require('email-validator')
@@ -36,6 +37,23 @@ const signUp = (req, res) => {
                         req.body.cardNo,
                         req.body.email,
                         req.body.password
+                    )
+                    let sender = mailConfig.mailUser
+                    let receiver = req.body.email
+                    let mailOptions = {
+                        from: sender,
+                        to: receiver,
+                        subject: 'AskBid Registration',
+                        html: `<p><b>Dear ${
+                            req.body.fullName
+                        }</b></p><p>Your registration was successful.</p><p>Welcome :)</p>`
+                    }
+                    mailConfig.transporter.sendMail(
+                        mailOptions,
+                        (error, info) => {
+                            if (error) throw error
+                            console.log('Mail sent')
+                        }
                     )
                     res.status(200).json({ status: 'success' })
                 } else {
