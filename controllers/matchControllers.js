@@ -38,13 +38,17 @@ const mailMatch = (ownerId, customerId) => {
     connection.query(query, [ownerId, customerId], (error, results) => {
         if (error) throw error
         result = JSON.parse(JSON.stringify(results))
+        let sender = mailConfig.mailUser
+        let receiver = result[0][0].email
         let mailOptions = {
             from: sender,
             to: receiver,
             subject: 'AskBid Matched Order',
             html: `<p><b>Dear ${
-                result[0].fullName
-            }</b></p><p>Your order was matched by ${result[1].fullName}.</p>`
+                result[0][0].full_name
+            }</b></p><p>Your order was matched by ${
+                result[1][0].full_name
+            }.</p>`
         }
         mailConfig.transporter.sendMail(mailOptions, (error, info) => {
             if (error) throw error
@@ -71,16 +75,16 @@ const placeOrder = (req, res) => {
                     if (error) throw error
                     result = JSON.parse(JSON.stringify(results))
                     if (
-                        result[0].length !== 0 &&
-                        result[1].balance >= result[0].price
+                        result[0][0].length !== 0 &&
+                        result[1][0].balance >= result[0][0].price
                     ) {
                         processMatch(
                             req.body.userId,
-                            result[0].id,
+                            result[0][0].id,
                             req.body.price,
-                            result[0].price
+                            result[0][0].price
                         )
-                        mailMatch(result[0].user_id, req.body.userId)
+                        mailMatch(result[0][0].user_id, req.body.userId)
                         res.status(200).json({ status: 'success' })
                     } else {
                         res.status(400).json({ status: 'fail' })
@@ -103,16 +107,16 @@ const placeOrder = (req, res) => {
                     if (error) throw error
                     result = JSON.parse(JSON.stringify(results))
                     if (
-                        result[0].length !== 0 &&
-                        result[1].balance >= result[0].price
+                        result[0][0].length !== 0 &&
+                        result[1][0].balance >= result[0][0].price
                     ) {
                         processMatch(
                             req.body.userId,
-                            result[0].id,
+                            result[0][0].id,
                             req.body.price,
-                            result[0].price
+                            result[0][0].price
                         )
-                        mailMatch(result[0].user_id, req.body.userId)
+                        mailMatch(result[0][0].user_id, req.body.userId)
                         res.status(200).json({ status: 'success' })
                     } else {
                         res.status(400).json({ status: 'fail' })
