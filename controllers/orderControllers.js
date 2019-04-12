@@ -16,7 +16,10 @@ const createOrder = (req, res) => {
                 req.body.size,
                 req.body.price,
                 req.body.flag,
-                new Date().toISOString().split('T')[0]
+                new Date()
+                    .toISOString()
+                    .replace(/T/, ' ')
+                    .replace(/\..+/, '')
             ],
             (error, results) => {
                 if (error) throw error
@@ -81,7 +84,10 @@ const updateOrder = (req, res) => {
                 req.body.size,
                 req.body.price,
                 req.body.flag,
-                new Date().toISOString().split('T')[0],
+                new Date()
+                    .toISOString()
+                    .replace(/T/, ' ')
+                    .replace(/\..+/, ''),
                 req.body.orderId,
                 req.body.userId
             ],

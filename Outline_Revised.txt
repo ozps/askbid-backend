@@ -11,7 +11,7 @@ Table
     -bank_no: nvarchar
     -avatar_image: nvarchar
     -card_image: nvarchar
-    -level: (ban:-1,normal:0,verified:1,admin:2)
+    -level: int (ban:-1,normal:0,verified:1,admin:2)
 
 •item 
     -id: int
@@ -28,19 +28,19 @@ Table
     -item_id: int 
     -size: nvarchar 
     -price: double 
-    -type: (Ask:0,Bid:1)
+    -type: boolean (Ask:0,Bid:1)
     -published_date: date
-    -available: (No:0,Yes:1) 
+    -available: boolean (No:0,Yes:1) 
 
 •match
     -id: int
     -user_id: int 
-    -order_id: [int] 
-    -amount: int
-    -total_price: double
+    -order_id: int
+    -insert_price: double
+    -best_price: double
     -paid_date: date
-    -shipping_status: (เตรียมส่ง:0,กำลังส่ง:1,ส่งถึง:2)
     -stamp_date: date
+    -shipping_status: int (เตรียมส่ง:0,กำลังส่ง:1,ส่งถึง:2)
 
 API
 •/items
@@ -81,7 +81,7 @@ get_bid_price       GET in-item_id
 
 •/match (level!=-1)
 # Unfinished Swagger 
--place_order 		POST in-`match` (+email_noti ถึงคนตั้ง,+pay ไปที่ admin, always check available)
+-place_order 		POST in-`match` (+email_noti ถึงคนตั้ง,check available+user balance,ตัดเงิน User,เพิ่มเงิน Admin,Update Order available,สร้าง Match) 
 get_user_match 	    POST in-user_id
 get_bill 			POST in-match_id
 -update_shipping 	POST in-stamp_date,received (+email_noti ถึงคนตั้งได้รับเงิน)
