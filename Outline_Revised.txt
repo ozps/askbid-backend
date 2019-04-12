@@ -65,7 +65,6 @@ verify  			POST in-user_id (+email_noti)
 ban  				POST in-user_id (+email_noti) (permanent)
 add_item 		 	POST in-`item`
 upload_item_image   POST in-item_id,file    # Problem only on Swagger
--payment  			POST in-total_price*0.97,bank_no
 
 •/order (level>0)
 create_order 		POST in-`order` 
@@ -80,14 +79,14 @@ get_ask_price       GET in-item_id
 get_bid_price       GET in-item_id
 
 •/match (level!=-1)
-# Unfinished Swagger 
--place_order 		POST in-`match` (+email_noti ถึงคนตั้ง,check available+user balance,ตัดเงิน User,เพิ่มเงิน Admin,Update Order available,สร้าง Match) 
+place_order 		POST in-`match` (+email_noti ถึงคนตั้ง,check available+user balance,ตัดเงิน User,เพิ่มเงิน Admin,Update Order available,สร้าง Match) 
 get_user_match 	    POST in-user_id
 get_bill 			POST in-match_id
+# Unfinished Swagger 
 -update_shipping 	POST in-stamp_date,received (+email_noti ถึงคนตั้งได้รับเงิน)
 
 Note!
--MatchAPI+Payment
+-Update_shipping 
 -Update AskBid.sql at folder config
 -Update Swagger
 -Timing Auto Payment

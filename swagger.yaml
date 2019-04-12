@@ -13,6 +13,8 @@ tags:
       description: Operations about admin
     - name: order
       description: Everything about order
+    - name: match
+      description: Everything about match
 schemes:
     - http
     - https
@@ -156,7 +158,7 @@ paths:
             parameters:
                 - name: state
                   in: body
-                  description: Information of a user
+                  description: Information of an user
                   type: object
                   properties:
                       fullName:
@@ -194,7 +196,7 @@ paths:
             parameters:
                 - name: state
                   in: body
-                  description: Information of a user
+                  description: Information of an user
                   type: object
                   properties:
                       email:
@@ -272,7 +274,7 @@ paths:
             parameters:
                 - name: state
                   in: body
-                  description: Information of a user
+                  description: Information of an user
                   type: object
                   properties:
                       fullName:
@@ -457,7 +459,7 @@ paths:
             tags:
                 - admin
             summary: Verify
-            description: Admin wants to verify a user
+            description: Admin wants to verify an user
             operationId: verify
             produces:
                 - application/json
@@ -494,7 +496,7 @@ paths:
             tags:
                 - admin
             summary: Ban
-            description: Admin wants to ban a user
+            description: Admin wants to ban an user
             operationId: ban
             produces:
                 - application/json
@@ -934,6 +936,139 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/definitions/order'
+    /match/place_order:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - match
+            summary: Place order
+            description: Customers want to place order
+            operationId: placeOrder
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: Information of a match
+                  type: object
+                  properties:
+                      itemId:
+                          type: integer
+                      size:
+                          type: string
+                      price:
+                          type: number
+                      flag:
+                          type: integer
+                      userId:
+                          type: integer
+                      level:
+                          type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                400:
+                    description: Bad request
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+    /match/get_user_match:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - match
+            summary: Get user match
+            description: Customers want to get their own match
+            operationId: getUserMatch
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: Information of an user
+                  type: object
+                  properties:
+                      userId:
+                          type: integer
+                      level:
+                          type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/match'
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+    /match/get_bill:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - match
+            summary: Get bill
+            description: Customers want to get bill
+            operationId: getBill
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: Information of an user
+                  type: object
+                  properties:
+                      matchId:
+                          type: integer
+                      userId:
+                          type: integer
+                      level:
+                          type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    $ref: '#/definitions/match'
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
 definitions:
     item:
         type: object
@@ -966,28 +1101,28 @@ definitions:
                 type: integer
             full_name:
                 type: string
-                description: Full name of a user
+                description: Full name of an user
             card_no:
                 type: string
-                description: Id card number of a user
+                description: Id card number of an user
             email:
                 type: string
-                description: Email of a user
+                description: Email of an user
             password:
                 type: string
-                description: Password of a user
+                description: Password of an user
             address:
                 type: string
-                description: Address of a user
+                description: Address of an user
             tel_no:
                 type: string
-                description: Telephone number of a user
+                description: Telephone number of an user
             balance:
                 type: number
-                description: Balance of a user
+                description: Balance of an user
             bank_no:
                 type: string
-                description: Bank account number of a user
+                description: Bank account number of an user
             avatar_image:
                 type: string
                 description: Avatar image path of an user
@@ -996,7 +1131,7 @@ definitions:
                 description: Card image path of an user
             level:
                 type: integer
-                description: Level of a user (-1-Banned, 0-Normal, 1-Verified, 2-Admin)
+                description: Level of an user (-1-Banned, 0-Normal, 1-Verified, 2-Admin)
     order:
         type: object
         properties:
@@ -1024,3 +1159,31 @@ definitions:
             available:
                 type: integer
                 description: Stock of an item (0-Out, 1-In)
+    match:
+        type: object
+        properties:
+            id:
+                type: integer
+            user_id:
+                type: integer
+                description: User id of customer
+            order_id:
+                type: integer
+                description: Order id of an order
+            insert_price:
+                type: number
+                description: Desire price
+            best_price:
+                type: number
+                description: Best price that matched by system
+            paid_date:
+                type: string
+                format: date-time
+                description: Paid date of a match
+            stamp_date:
+                type: string
+                format: date-time
+                description: Last date that status updated
+            shipping_status:
+                type: integer
+                description: Status about shipping (0-Prepared, 1-Shipped, 2-Received)

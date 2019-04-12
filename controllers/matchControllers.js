@@ -134,7 +134,7 @@ const getUserMatch = (req, res) => {
             if (error) throw error
             result = JSON.parse(JSON.stringify(results))
             result = result.sort((a, b) => (a.paid_date < b.paid_date ? 1 : -1))
-            res.status(200).json(result)
+            res.status(200).json({ status: 'success', result: result })
         })
     } else res.status(401).json({ status: 'fail' })
 }
@@ -148,7 +148,7 @@ const getBill = (req, res) => {
             (error, results) => {
                 if (error) throw error
                 result = JSON.parse(JSON.stringify(results))
-                res.status(200).json(result)
+                res.status(200).json({ status: 'success', result: result })
             }
         )
     } else res.status(401).json({ status: 'fail' })
