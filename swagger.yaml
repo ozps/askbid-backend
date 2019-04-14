@@ -151,7 +151,7 @@ paths:
             tags:
                 - user
             summary: Sign up
-            description: Users want to sign up
+            description: Users want to sign up and admin sends email notification
             operationId: signUp
             produces:
                 - application/json
@@ -459,7 +459,7 @@ paths:
             tags:
                 - admin
             summary: Verify
-            description: Admin wants to verify an user
+            description: Admin wants to verify an user and sends email notification
             operationId: verify
             produces:
                 - application/json
@@ -496,7 +496,7 @@ paths:
             tags:
                 - admin
             summary: Ban
-            description: Admin wants to ban an user
+            description: Admin wants to ban an user and sends email notification
             operationId: ban
             produces:
                 - application/json
@@ -943,7 +943,7 @@ paths:
             tags:
                 - match
             summary: Place order
-            description: Customers want to place order
+            description: Customers want to place order, pay for it and admin sends email notification
             operationId: placeOrder
             produces:
                 - application/json
@@ -1159,7 +1159,7 @@ paths:
             tags:
                 - match
             summary: Update shipping status
-            description: Customers want to update shipping status
+            description: Customers want to update shipping status and admin sends email notification and transfer money to owner if customer reveice an item
             operationId: updateShipping
             produces:
                 - application/json
