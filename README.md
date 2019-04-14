@@ -8,7 +8,7 @@
     \$ brew install graphicsmagick
 -   Create dbConfig.js and keys.js and move to folder config
 -   Create MySQL database by using AskBid.sql
--   Install yarn ny <br />
+-   Install yarn by <br />
     \$ npm install -g yarn
 -   Run following command at app directory <br />
     \$ yarn install
@@ -20,4 +20,4 @@
 
 ## Documentation
 
--   Swagger at path /api-docs
+-   Swagger at path <b>/api-docs</b>
