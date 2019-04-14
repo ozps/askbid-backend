@@ -1019,7 +1019,76 @@ paths:
                             result:
                                 type: array
                                 items:
-                                    $ref: '#/definitions/match'
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                        user_id:
+                                            type: integer
+                                        order_id:
+                                            type: integer
+                                        price:
+                                            type: number
+                                        paid_date:
+                                            type: string
+                                            format: date-time
+                                        item:
+                                            type: string
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+    /match/get_pending_match:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - match
+            summary: Get user pending match
+            description: Customers want to get their own pending match
+            operationId: getPendingMatch
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: Information of an user
+                  type: object
+                  properties:
+                      userId:
+                          type: integer
+                      level:
+                          type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                            result:
+                                type: array
+                                items:
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                        user_id:
+                                            type: integer
+                                        order_id:
+                                            type: integer
+                                        price:
+                                            type: number
+                                        paid_date:
+                                            type: string
+                                            format: date-time
+                                        item:
+                                            type: string
+
                 401:
                     description: Authorization information is missing or invalid
                     schema:
@@ -1061,7 +1130,21 @@ paths:
                             result:
                                 type: array
                                 items:
-                                    $ref: '#/definitions/match'
+                                    type: object
+                                    properties:
+                                        id:
+                                            type: integer
+                                        user_id:
+                                            type: integer
+                                        order_id:
+                                            type: integer
+                                        price:
+                                            type: number
+                                        paid_date:
+                                            type: string
+                                            format: date-time
+                                        item:
+                                            type: string
                 401:
                     description: Authorization information is missing or invalid
                     schema:

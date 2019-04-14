@@ -129,26 +129,74 @@ const placeOrder = (req, res) => {
 
 const getUserMatch = (req, res) => {
     if (!checkBan(req.body.level)) {
-        let query = 'SELECT * FROM `match` WHERE user_id = ?'
+        let query =
+            'SELECT * FROM `match` INNER JOIN `order` ON match.order_id = order.id INNER JOIN `item` ON order.item_id = item.id WHERE match.user_id = ?'
         connection.query(query, [req.body.userId], (error, results) => {
             if (error) throw error
             result = JSON.parse(JSON.stringify(results))
             result = result.sort((a, b) => (a.paid_date < b.paid_date ? 1 : -1))
-            res.status(200).json({ status: 'success', result: result })
+            output = []
+            for (x of result) {
+                let temp = {}
+                temp.id = x.id
+                temp.user_id = x.user_id
+                temp.order_id = x.order_id
+                temp.price = x.best_price
+                temp.paid_date = x.paid_date
+                temp.item = x.brand + ' ' + x.desc + ' ' + x.color
+                output.push(temp)
+            }
+            res.status(200).json({ status: 'success', result: output })
+        })
+    } else res.status(401).json({ status: 'fail' })
+}
+
+const getPendingMatch = (req, res) => {
+    if (!checkBan(req.body.level)) {
+        let query =
+            'SELECT * FROM `match` INNER JOIN `order` ON match.order_id = order.id INNER JOIN `item` ON order.item_id = item.id WHERE match.user_id = ? AND match.shipping_status <> 2'
+        connection.query(query, [req.body.userId], (error, results) => {
+            if (error) throw error
+            result = JSON.parse(JSON.stringify(results))
+            result = result.sort((a, b) => (a.paid_date < b.paid_date ? 1 : -1))
+            output = []
+            for (x of result) {
+                let temp = {}
+                temp.id = x.id
+                temp.user_id = x.user_id
+                temp.order_id = x.order_id
+                temp.price = x.best_price
+                temp.paid_date = x.paid_date
+                temp.item = x.brand + ' ' + x.desc + ' ' + x.color
+                output.push(temp)
+            }
+            res.status(200).json({ status: 'success', result: output })
         })
     } else res.status(401).json({ status: 'fail' })
 }
 
 const getBill = (req, res) => {
     if (!checkBan(req.body.level)) {
-        let query = 'SELECT * FROM `match` WHERE id = ? AND user_id = ?'
+        let query =
+            'SELECT * FROM `match` INNER JOIN `order` ON match.order_id = order.id INNER JOIN `item` ON order.item_id = item.id WHERE match.id = ? AND match.user_id = ?'
         connection.query(
             query,
             [req.body.matchId, req.body.userId],
             (error, results) => {
                 if (error) throw error
                 result = JSON.parse(JSON.stringify(results))
-                res.status(200).json({ status: 'success', result: result })
+                output = []
+                for (x of result) {
+                    let temp = {}
+                    temp.id = x.id
+                    temp.user_id = x.user_id
+                    temp.order_id = x.order_id
+                    temp.price = x.best_price
+                    temp.paid_date = x.paid_date
+                    temp.item = x.brand + ' ' + x.desc + ' ' + x.color
+                    output.push(temp)
+                }
+                res.status(200).json({ status: 'success', result: output })
             }
         )
     } else res.status(401).json({ status: 'fail' })
@@ -159,6 +207,7 @@ const updateShipping = (req, res) => {}
 module.exports = {
     placeOrder,
     getUserMatch,
+    getPendingMatch,
     getBill,
     updateShipping
 }

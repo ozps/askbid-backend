@@ -5,8 +5,11 @@ const router = new Router()
 // Place order
 router.post('/place_order', matchControllers.placeOrder)
 
-// Get all matches of a user
+// Get all matches of an user
 router.post('/get_user_match', matchControllers.getUserMatch)
+
+// Get pending matches of an user
+router.post('/get_pending_match', matchControllers.getPendingMatch)
 
 // Get history of a match
 router.post('/get_bill', matchControllers.getBill)
