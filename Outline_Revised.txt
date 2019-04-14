@@ -83,14 +83,9 @@ place_order 		POST in-`match` (+email_noti ถึงคนตั้ง,check ava
 get_user_match 	    POST in-user_id
 get_pending_match   POST in-user_id
 get_bill 			POST in-match_id,user_id
-# Unfinished Swagger 
--update_shipping 	POST in-stamp_date,received (+email_noti ถึงคนตั้งได้รับเงิน)
+update_shipping 	POST in-stamp_date,received (+email_noti ถึงคนตั้งได้รับเงิน)
 
 Note!
--Update_shipping 
--Update AskBid.sql at folder config
--Update Swagger
--Timing Auto Payment
 -Merge Git Branch 
 -Deployment
 

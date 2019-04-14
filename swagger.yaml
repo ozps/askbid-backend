@@ -1152,6 +1152,46 @@ paths:
                         properties:
                             status:
                                 type: string
+    /match/update_shipping:
+        post:
+            security:
+                - Bearer: []
+            tags:
+                - match
+            summary: Update shipping status
+            description: Customers want to update shipping status
+            operationId: updateShipping
+            produces:
+                - application/json
+            parameters:
+                - name: state
+                  in: body
+                  description: Information of a match
+                  type: object
+                  properties:
+                      shippingStatus:
+                          type: integer
+                      matchId:
+                          type: integer
+                      userId:
+                          type: integer
+                      level:
+                          type: integer
+            responses:
+                200:
+                    description: Successful operation
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
+                401:
+                    description: Authorization information is missing or invalid
+                    schema:
+                        type: object
+                        properties:
+                            status:
+                                type: string
 definitions:
     item:
         type: object

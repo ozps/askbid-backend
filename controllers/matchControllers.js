@@ -7,7 +7,7 @@ const checkBan = level => {
 
 const processMatch = (userId, orderId, insertPrice, bestPrice) => {
     let query =
-        'UPDATE `user` SET balance = balance - ? WHERE id= ?;UPDATE `user` SET balance = balance + ? WHERE level = 2;UPDATE `order` SET available = 0 WHERE id = ?;INSERT INTO `match` (user_id, order_id, insert_price, best_price, paid_date, stamp_date) VALUES (?, ?, ?, ?, ?, ?)'
+        'UPDATE `user` SET balance = balance - ? WHERE id = ?;UPDATE `user` SET balance = balance + ? WHERE level = 2;UPDATE `order` SET available = 0 WHERE id = ?;INSERT INTO `match` (user_id, order_id, insert_price, best_price, paid_date, stamp_date) VALUES (?, ?, ?, ?, ?, ?)'
     let date = new Date()
         .toISOString()
         .replace(/T/, ' ')
@@ -49,6 +49,36 @@ const mailMatch = (ownerId, customerId) => {
             }</b></p><p>Your order was matched by ${
                 result[1][0].full_name
             }.</p>`
+        }
+        mailConfig.transporter.sendMail(mailOptions, (error, info) => {
+            if (error) throw error
+            console.log('Mail sent')
+        })
+    })
+}
+
+const processReceived = (netPrice, ownerId) => {
+    let query =
+        'UPDATE `user` SET balance = balance + ? WHERE id = ?;UPDATE `user` SET balance = balance - ? WHERE level = 2'
+    connection.query(query, [netPrice, ownerId, netPrice], (error, results) => {
+        if (error) throw error
+    })
+}
+
+const mailClosed = (ownerId, netPrice) => {
+    let query = 'SELECT * FROM `user` WHERE id = ?'
+    connection.query(query, [ownerId], (error, results) => {
+        if (error) throw error
+        result = JSON.parse(JSON.stringify(results))
+        let sender = mailConfig.mailUser
+        let receiver = result[0].email
+        let mailOptions = {
+            from: sender,
+            to: receiver,
+            subject: 'AskBid Closed Match',
+            html: `<p><b>Dear ${
+                result[0].full_name
+            }</b></p><p>You have received ${netPrice} Baht.</p>`
         }
         mailConfig.transporter.sendMail(mailOptions, (error, info) => {
             if (error) throw error
@@ -202,7 +232,32 @@ const getBill = (req, res) => {
     } else res.status(401).json({ status: 'fail' })
 }
 
-const updateShipping = (req, res) => {}
+const updateShipping = (req, res) => {
+    if (!checkBan(req.body.level)) {
+        let query =
+            'UPDATE `match` SET shipping_status = ? WHERE id = ? AND user_id = ?;SELECT * FROM `match` INNER JOIN `order` ON match.order_id = order.id INNER JOIN `user` ON order.user_id = user.id WHERE match.id = ? AND match.user_id = ?'
+        connection.query(
+            query,
+            [
+                req.body.shippingStatus,
+                req.body.matchId,
+                req.body.userId,
+                req.body.matchId,
+                req.body.userId
+            ],
+            (error, results) => {
+                if (error) throw error
+                if (req.body.shippingStatus === 2) {
+                    result = JSON.parse(JSON.stringify(results))
+                    let netPrice = result[1][0].best_price * 0.97
+                    processReceived(netPrice, result[1][0].user_id)
+                    mailClosed(result[1][0].user_id, netPrice)
+                }
+                res.status(200).json({ status: 'success' })
+            }
+        )
+    } else res.status(401).json({ status: 'fail' })
+}
 
 module.exports = {
     placeOrder,
